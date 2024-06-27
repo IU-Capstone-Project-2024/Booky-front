@@ -28,38 +28,36 @@ class PostsScreen extends StatelessWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              SearchField(controller: TextEditingController()),
-              const SizedBox(height: 16.0),
-              BlocBuilder(
-                bloc: cubit,
-                builder: (context, state) {
-                  if (state is CoursesListLoaded) {
-                    for (Course c in state.courses) {
-                      if (c.id == course.id) {
-                        if (c.notes.isEmpty) {
-                          return const Center(child: Text('Пока нет заметок'));
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SearchField(controller: TextEditingController()),
+                const SizedBox(height: 16.0),
+                BlocBuilder(
+                  bloc: cubit,
+                  builder: (context, state) {
+                    if (state is CoursesListLoaded) {
+                      for (Course c in state.courses) {
+                        if (c.id == course.id) {
+                          if (c.notes.isEmpty) {
+                            return const Center(child: Text('Пока нет заметок'));
+                          }
+                          List<Widget> children = [];
+                          for (Note n in c.notes) {
+                            children.add(PostListItem(note: n));
+                          }
+                          return Column(
+                            children: children,
+                          );
                         }
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: c.notes.length,
-                          itemBuilder: (_, int i) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 4.0,
-                            ),
-                            child: PostListItem(note: c.notes[i]),
-                          ),
-                        );
                       }
+                      return const Center(child: Text('Пока нет заметок'));
                     }
-                    return const Center(child: Text('Пока нет заметок'));
-                  }
-                  return const Center(child: CircularProgressIndicator());
-                },
-              ),
-            ],
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
