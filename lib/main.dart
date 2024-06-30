@@ -1,10 +1,10 @@
-import 'package:booky/common/app_colors.dart/theme.dart';
 import 'package:booky/features/courses/screens/courses_screen.dart';
+import 'package:booky/getit.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await BookyServer().run();
+  configureDependencies();
   runApp(const MyApp());
 }
 
@@ -13,9 +13,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
-      theme: const MaterialTheme(TextTheme()).light(),
       home: CoursesScreen(),
     );
   }

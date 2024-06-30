@@ -65,6 +65,22 @@ class BookyServiceClient extends $grpc.Client {
       '/booky.BookyService/ListNotes',
       ($0.ListNotesRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.ListNotesResponse.fromBuffer(value));
+  static final _$createFile = $grpc.ClientMethod<$0.CreateFileRequest, $0.CreateFileResponse>(
+      '/booky.BookyService/CreateFile',
+      ($0.CreateFileRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.CreateFileResponse.fromBuffer(value));
+  static final _$getFile = $grpc.ClientMethod<$0.GetFileRequest, $0.GetFileResponse>(
+      '/booky.BookyService/GetFile',
+      ($0.GetFileRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.GetFileResponse.fromBuffer(value));
+  static final _$deleteFile = $grpc.ClientMethod<$0.DeleteFileRequest, $0.DeleteFileResponse>(
+      '/booky.BookyService/DeleteFile',
+      ($0.DeleteFileRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.DeleteFileResponse.fromBuffer(value));
+  static final _$listFiles = $grpc.ClientMethod<$0.ListFilesRequest, $0.ListFilesResponse>(
+      '/booky.BookyService/ListFiles',
+      ($0.ListFilesRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.ListFilesResponse.fromBuffer(value));
 
   BookyServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -115,9 +131,25 @@ class BookyServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.ListNotesResponse> listNotes($0.ListNotesRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$listNotes, request, options: options);
   }
+
+  $grpc.ResponseFuture<$0.CreateFileResponse> createFile($0.CreateFileRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$createFile, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.GetFileResponse> getFile($0.GetFileRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getFile, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.DeleteFileResponse> deleteFile($0.DeleteFileRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteFile, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ListFilesResponse> listFiles($0.ListFilesRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$listFiles, request, options: options);
+  }
 }
 
-@$pb.GrpcServiceName('booky.BookyServiceApi')
+@$pb.GrpcServiceName('booky.BookyService')
 abstract class BookyServiceBase extends $grpc.Service {
   $core.String get $name => 'booky.BookyService';
 
@@ -199,6 +231,34 @@ abstract class BookyServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.ListNotesRequest.fromBuffer(value),
         ($0.ListNotesResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.CreateFileRequest, $0.CreateFileResponse>(
+        'CreateFile',
+        createFile_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.CreateFileRequest.fromBuffer(value),
+        ($0.CreateFileResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetFileRequest, $0.GetFileResponse>(
+        'GetFile',
+        getFile_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.GetFileRequest.fromBuffer(value),
+        ($0.GetFileResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.DeleteFileRequest, $0.DeleteFileResponse>(
+        'DeleteFile',
+        deleteFile_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.DeleteFileRequest.fromBuffer(value),
+        ($0.DeleteFileResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ListFilesRequest, $0.ListFilesResponse>(
+        'ListFiles',
+        listFiles_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.ListFilesRequest.fromBuffer(value),
+        ($0.ListFilesResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.HealthCheckResponse> healthCheck_Pre($grpc.ServiceCall call, $async.Future<$0.HealthCheckRequest> request) async {
@@ -245,6 +305,22 @@ abstract class BookyServiceBase extends $grpc.Service {
     return listNotes(call, await request);
   }
 
+  $async.Future<$0.CreateFileResponse> createFile_Pre($grpc.ServiceCall call, $async.Future<$0.CreateFileRequest> request) async {
+    return createFile(call, await request);
+  }
+
+  $async.Future<$0.GetFileResponse> getFile_Pre($grpc.ServiceCall call, $async.Future<$0.GetFileRequest> request) async {
+    return getFile(call, await request);
+  }
+
+  $async.Future<$0.DeleteFileResponse> deleteFile_Pre($grpc.ServiceCall call, $async.Future<$0.DeleteFileRequest> request) async {
+    return deleteFile(call, await request);
+  }
+
+  $async.Future<$0.ListFilesResponse> listFiles_Pre($grpc.ServiceCall call, $async.Future<$0.ListFilesRequest> request) async {
+    return listFiles(call, await request);
+  }
+
   $async.Future<$0.HealthCheckResponse> healthCheck($grpc.ServiceCall call, $0.HealthCheckRequest request);
   $async.Future<$0.CreateCourseResponse> createCourse($grpc.ServiceCall call, $0.CreateCourseRequest request);
   $async.Future<$0.GetCourseResponse> getCourse($grpc.ServiceCall call, $0.GetCourseRequest request);
@@ -256,4 +332,8 @@ abstract class BookyServiceBase extends $grpc.Service {
   $async.Future<$0.UpdateNoteResponse> updateNote($grpc.ServiceCall call, $0.UpdateNoteRequest request);
   $async.Future<$0.DeleteNoteResponse> deleteNote($grpc.ServiceCall call, $0.DeleteNoteRequest request);
   $async.Future<$0.ListNotesResponse> listNotes($grpc.ServiceCall call, $0.ListNotesRequest request);
+  $async.Future<$0.CreateFileResponse> createFile($grpc.ServiceCall call, $0.CreateFileRequest request);
+  $async.Future<$0.GetFileResponse> getFile($grpc.ServiceCall call, $0.GetFileRequest request);
+  $async.Future<$0.DeleteFileResponse> deleteFile($grpc.ServiceCall call, $0.DeleteFileRequest request);
+  $async.Future<$0.ListFilesResponse> listFiles($grpc.ServiceCall call, $0.ListFilesRequest request);
 }

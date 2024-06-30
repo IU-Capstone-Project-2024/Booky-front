@@ -2,25 +2,33 @@ syntax = "proto3";
 
 package booky;
 
-// option go_package = "api/booky";
+option go_package = "api/booky";
+
+import "google/protobuf/timestamp.proto";
 
 // Service definition
 service BookyService {
     rpc HealthCheck (HealthCheckRequest) returns (HealthCheckResponse);
 
-    // Course CRUD
+    // Courses
     rpc CreateCourse(CreateCourseRequest) returns (CreateCourseResponse);
     rpc GetCourse(GetCourseRequest) returns (GetCourseResponse);
     rpc UpdateCourse(UpdateCourseRequest) returns (UpdateCourseResponse);
     rpc DeleteCourse(DeleteCourseRequest) returns (DeleteCourseResponse);
     rpc ListCourses(ListCoursesRequest) returns (ListCoursesResponse);
 
-    // Note CRUD
+    // Notes
     rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse);
     rpc GetNote(GetNoteRequest) returns (GetNoteResponse);
     rpc UpdateNote(UpdateNoteRequest) returns (UpdateNoteResponse);
     rpc DeleteNote(DeleteNoteRequest) returns (DeleteNoteResponse);
     rpc ListNotes(ListNotesRequest) returns (ListNotesResponse);
+
+    // Files
+    rpc CreateFile (CreateFileRequest) returns (CreateFileResponse);
+    rpc GetFile (GetFileRequest) returns (GetFileResponse);
+    rpc DeleteFile (DeleteFileRequest) returns (DeleteFileResponse);
+    rpc ListFiles (ListFilesRequest) returns (ListFilesResponse);
 }
 
 message HealthCheckRequest {}
@@ -32,7 +40,28 @@ message HealthCheckResponse {
 message Course {
     string id = 1;
     string title = 2;
-    string description = 3;
+    optional string description = 3;
+    repeated Track tracks = 4;
+    Semester semester = 5;
+    int32 year = 6;
+}
+
+enum Track {
+    TRACK_UNKNOWN = 0;
+    TRACK_CORE = 1;
+    TRACK_SOFTWARE_DEVELOPMENT = 2;
+    TRACK_CYBER_SECURITY = 3;
+    TRACK_GAME_DEVELOPMENT = 4;
+    TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE = 5;
+    TRACK_ROBOTICS = 6;
+    TRACK_DATA_SCIENCE = 7;
+}
+
+enum Semester {
+    SEMESTER_UNKNOWN = 0;
+    SEMESTER_FALL = 1;
+    SEMESTER_SPRING = 2;
+    SEMESTER_SUMMER = 3;
 }
 
 message Note {
@@ -40,10 +69,34 @@ message Note {
     string course_id = 2;
     string title = 3;
     string body = 4;
+    google.protobuf.Timestamp created_at = 5;
+    optional google.protobuf.Timestamp updated_at = 6;
+    User publisher = 7;
+}
+
+message User {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    Password password = 4;
+    google.protobuf.Timestamp created_at = 5;
+}
+
+message Password {
+    string password = 1;
+    string password_hash = 2;
+}
+
+message CreateCourseData {
+    string title = 1;
+    optional string description = 2;
+    repeated Track tracks = 3;
+    Semester semester = 4;
+    int32 year = 5;
 }
 
 message CreateCourseRequest {
-    Course course = 1;
+    CreateCourseData data = 1;
 }
 
 message CreateCourseResponse {
@@ -59,7 +112,7 @@ message GetCourseResponse {
 }
 
 message UpdateCourseRequest {
-    Course course = 1;
+    CreateCourseData data = 1;
 }
 
 message UpdateCourseResponse {
@@ -78,8 +131,15 @@ message ListCoursesResponse {
     repeated Course courses = 1;
 }
 
+message CreateNoteData {
+    string course_id = 1;
+    string title = 2;
+    string body = 3;
+    string user_id = 4;
+}
+
 message CreateNoteRequest {
-    Note note = 1;
+    CreateNoteData data = 1;
 }
 
 message CreateNoteResponse {
@@ -95,7 +155,7 @@ message GetNoteResponse {
 }
 
 message UpdateNoteRequest {
-    Note note = 1;
+    CreateNoteData data = 1;
 }
 
 message UpdateNoteResponse {
@@ -116,21 +176,48 @@ message ListNotesResponse {
     repeated Note notes = 1;
 }
 
-/*
+message File {
+    string id = 1;
+    string course_id = 2;
+    bytes content = 3;
+    string filename = 4;
+    User publisher = 5;
+    google.protobuf.Timestamp created_at = 6;
+}
 
-Note for protobuf
+message CreateFileData {
+    string course_id = 1;
+    bytes content = 2;
+    string filename = 3;
+    string user_id = 4;
+}
 
-Protocol Buffers - Google's data interchange format
-Copyright 2008 Google Inc.
-https://developers.google.com/protocol-buffers/
-This package contains a precompiled binary version of the protocol buffer
-compiler (protoc). This binary is intended for users who want to use Protocol
-Buffers in languages other than C++ but do not want to compile protoc
-themselves. To install, simply place this binary somewhere in your PATH.
-If you intend to use the included well known types then don't forget to
-copy the contents of the 'include' directory somewhere as well, for example
-into '/usr/local/include/'.
-Please refer to our official github site for more installation instructions:
-  https://github.com/protocolbuffers/protobuf
+message CreateFileRequest {
+    CreateFileData data = 1;
+}
 
-*/
+message CreateFileResponse {
+    File file = 1;
+}
+
+message GetFileRequest {
+    string id = 1;
+}
+
+message GetFileResponse {
+    File file = 1;
+}
+
+message DeleteFileRequest {
+    string id = 1;
+}
+
+message DeleteFileResponse {}
+
+message ListFilesRequest {
+    string course_id = 1;
+}
+
+message ListFilesResponse {
+    repeated File files = 1;
+}

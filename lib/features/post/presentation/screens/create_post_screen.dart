@@ -1,5 +1,6 @@
 import 'package:booky/common/widgets/common_app_bar.dart';
 import 'package:booky/features/courses/data/bloc/courses_cubit/courses_list_cubit.dart';
+import 'package:booky/proto/generated/booky.pb.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../common/constants/max_lines.dart';
@@ -10,13 +11,11 @@ class CreatePostScreen extends StatelessWidget {
     super.key,
     required this.titleController,
     required this.bodyController,
-    required this.cubit,
     required this.course,
   });
 
   final TextEditingController titleController;
   final TextEditingController bodyController;
-  final CoursesListCubit cubit;
   final Course course;
 
   @override
@@ -25,13 +24,6 @@ class CreatePostScreen extends StatelessWidget {
       child: Scaffold(
         floatingActionButton: CommonFloatingActionButton(
           onPressed: () {
-            final Note note = Note(
-              title: titleController.text,
-              body: bodyController.text,
-              id: '',
-            );
-            course.notes.add(note);
-            cubit.updateCourse(course);
             Navigator.of(context).pop();
           },
           icon: Icons.done,

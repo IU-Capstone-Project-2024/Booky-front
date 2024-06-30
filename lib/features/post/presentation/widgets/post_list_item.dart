@@ -1,9 +1,7 @@
-import 'package:booky/features/post/domain/entities/post_entity.dart';
-import 'package:booky/features/post/domain/enums/post_file_type.dart';
 import 'package:booky/features/post/presentation/screens/post_details_screen.dart';
+import 'package:booky/proto/generated/booky.pb.dart';
 import 'package:flutter/material.dart';
 
-import '../../../courses/data/bloc/courses_cubit/courses_list_cubit.dart';
 
 class PostListItem extends StatelessWidget {
   const PostListItem({super.key, required this.note});

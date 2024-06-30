@@ -1,21 +1,18 @@
-import 'package:booky/features/post/presentation/screens/post_details_screen.dart';
+import 'package:booky/proto/generated/booky.pb.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-import '../../features/courses/data/bloc/courses_cubit/courses_list_cubit.dart';
 import '../../features/post/presentation/screens/create_post_screen.dart';
 
 class DialFloatingActionButton extends StatelessWidget {
-  DialFloatingActionButton({
+  const DialFloatingActionButton({
     super.key,
     this.icon = Icons.add,
-    required this.cubit,
     required this.course,
   });
 
   final IconData icon;
-  final CoursesListCubit cubit;
-  Course course;
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +35,6 @@ class DialFloatingActionButton extends StatelessWidget {
                 builder: (context) => CreatePostScreen(
                   titleController: TextEditingController(),
                   bodyController: TextEditingController(),
-                  cubit: cubit,
                   course: course,
                 ),
               ),

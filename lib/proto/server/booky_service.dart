@@ -68,4 +68,28 @@ class BookyService extends BookyServiceBase {
     // TODO: implement updateNote
     throw UnimplementedError();
   }
+  
+  @override
+  Future<CreateFileResponse> createFile(ServiceCall call, CreateFileRequest request) {
+    // TODO: implement createFile
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<DeleteFileResponse> deleteFile(ServiceCall call, DeleteFileRequest request) {
+    // TODO: implement deleteFile
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<GetFileResponse> getFile(ServiceCall call, GetFileRequest request) {
+    // TODO: implement getFile
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<ListFilesResponse> listFiles(ServiceCall call, ListFilesRequest request) {
+    // TODO: implement listFiles
+    throw UnimplementedError();
+  }
 }

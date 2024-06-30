@@ -1,16 +1,16 @@
 import 'package:booky/proto/generated/booky.pbgrpc.dart';
 import 'package:grpc/grpc.dart';
+import 'package:injectable/injectable.dart';
 
-import '../server/booky_server.dart';
-
+@LazySingleton()
 class BookyTerminalClient {
   late final ClientChannel _channel;
   late final BookyServiceClient clientStub;
-
   BookyTerminalClient() {
     _channel = ClientChannel(
-      'localhost',
-      port: serverPort,
+      // 'localhost',
+      '10.0.2.2',
+      port: 4000,
       options: const ChannelOptions(
         credentials: ChannelCredentials.insecure(),
       ),
@@ -23,17 +23,19 @@ class BookyTerminalClient {
   }
 }
 
-Future<void> main() async {
+Future<void> test() async {
   final clientApp = BookyTerminalClient();
   await clientApp.clientStub.createCourse(
     CreateCourseRequest(
-      course: Course(
-        id: '0',
+      data: CreateCourseData(
         title: 'test',
         description: 'test',
+        tracks: [],
+        semester: Semester.SEMESTER_FALL,
+        year: 0,
       ),
     ),
   );
-  print((await clientApp.clientStub.getCourse(GetCourseRequest(id: '0'))).course.title);
+  print(await clientApp.clientStub.listCourses(ListCoursesRequest()));
   clientApp.shutdown();
 }

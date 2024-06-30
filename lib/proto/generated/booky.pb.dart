@@ -13,6 +13,11 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'booky.pbenum.dart';
+import '../google/protobuf/timestamp.pb.dart' as $1;
+
+export 'booky.pbenum.dart';
+
 class HealthCheckRequest extends $pb.GeneratedMessage {
   factory HealthCheckRequest() => create();
   HealthCheckRequest._() : super();
@@ -100,6 +105,9 @@ class Course extends $pb.GeneratedMessage {
     $core.String? id,
     $core.String? title,
     $core.String? description,
+    $core.Iterable<Track>? tracks,
+    Semester? semester,
+    $core.int? year,
   }) {
     final $result = create();
     if (id != null) {
@@ -111,6 +119,15 @@ class Course extends $pb.GeneratedMessage {
     if (description != null) {
       $result.description = description;
     }
+    if (tracks != null) {
+      $result.tracks.addAll(tracks);
+    }
+    if (semester != null) {
+      $result.semester = semester;
+    }
+    if (year != null) {
+      $result.year = year;
+    }
     return $result;
   }
   Course._() : super();
@@ -121,6 +138,9 @@ class Course extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'id')
     ..aOS(2, _omitFieldNames ? '' : 'title')
     ..aOS(3, _omitFieldNames ? '' : 'description')
+    ..pc<Track>(4, _omitFieldNames ? '' : 'tracks', $pb.PbFieldType.KE, valueOf: Track.valueOf, enumValues: Track.values, defaultEnumValue: Track.TRACK_UNKNOWN)
+    ..e<Semester>(5, _omitFieldNames ? '' : 'semester', $pb.PbFieldType.OE, defaultOrMaker: Semester.SEMESTER_UNKNOWN, valueOf: Semester.valueOf, enumValues: Semester.values)
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'year', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -171,6 +191,27 @@ class Course extends $pb.GeneratedMessage {
   $core.bool hasDescription() => $_has(2);
   @$pb.TagNumber(3)
   void clearDescription() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<Track> get tracks => $_getList(3);
+
+  @$pb.TagNumber(5)
+  Semester get semester => $_getN(4);
+  @$pb.TagNumber(5)
+  set semester(Semester v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasSemester() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearSemester() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.int get year => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set year($core.int v) { $_setSignedInt32(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasYear() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearYear() => clearField(6);
 }
 
 class Note extends $pb.GeneratedMessage {
@@ -179,6 +220,9 @@ class Note extends $pb.GeneratedMessage {
     $core.String? courseId,
     $core.String? title,
     $core.String? body,
+    $1.Timestamp? createdAt,
+    $1.Timestamp? updatedAt,
+    User? publisher,
   }) {
     final $result = create();
     if (id != null) {
@@ -193,6 +237,15 @@ class Note extends $pb.GeneratedMessage {
     if (body != null) {
       $result.body = body;
     }
+    if (createdAt != null) {
+      $result.createdAt = createdAt;
+    }
+    if (updatedAt != null) {
+      $result.updatedAt = updatedAt;
+    }
+    if (publisher != null) {
+      $result.publisher = publisher;
+    }
     return $result;
   }
   Note._() : super();
@@ -204,6 +257,9 @@ class Note extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'courseId')
     ..aOS(3, _omitFieldNames ? '' : 'title')
     ..aOS(4, _omitFieldNames ? '' : 'body')
+    ..aOM<$1.Timestamp>(5, _omitFieldNames ? '' : 'createdAt', subBuilder: $1.Timestamp.create)
+    ..aOM<$1.Timestamp>(6, _omitFieldNames ? '' : 'updatedAt', subBuilder: $1.Timestamp.create)
+    ..aOM<User>(7, _omitFieldNames ? '' : 'publisher', subBuilder: User.create)
     ..hasRequiredFields = false
   ;
 
@@ -263,15 +319,322 @@ class Note extends $pb.GeneratedMessage {
   $core.bool hasBody() => $_has(3);
   @$pb.TagNumber(4)
   void clearBody() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $1.Timestamp get createdAt => $_getN(4);
+  @$pb.TagNumber(5)
+  set createdAt($1.Timestamp v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasCreatedAt() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCreatedAt() => clearField(5);
+  @$pb.TagNumber(5)
+  $1.Timestamp ensureCreatedAt() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  $1.Timestamp get updatedAt => $_getN(5);
+  @$pb.TagNumber(6)
+  set updatedAt($1.Timestamp v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasUpdatedAt() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearUpdatedAt() => clearField(6);
+  @$pb.TagNumber(6)
+  $1.Timestamp ensureUpdatedAt() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  User get publisher => $_getN(6);
+  @$pb.TagNumber(7)
+  set publisher(User v) { setField(7, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasPublisher() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearPublisher() => clearField(7);
+  @$pb.TagNumber(7)
+  User ensurePublisher() => $_ensure(6);
+}
+
+class User extends $pb.GeneratedMessage {
+  factory User({
+    $core.String? id,
+    $core.String? name,
+    $core.String? email,
+    Password? password,
+    $1.Timestamp? createdAt,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    if (name != null) {
+      $result.name = name;
+    }
+    if (email != null) {
+      $result.email = email;
+    }
+    if (password != null) {
+      $result.password = password;
+    }
+    if (createdAt != null) {
+      $result.createdAt = createdAt;
+    }
+    return $result;
+  }
+  User._() : super();
+  factory User.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory User.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'User', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'id')
+    ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..aOS(3, _omitFieldNames ? '' : 'email')
+    ..aOM<Password>(4, _omitFieldNames ? '' : 'password', subBuilder: Password.create)
+    ..aOM<$1.Timestamp>(5, _omitFieldNames ? '' : 'createdAt', subBuilder: $1.Timestamp.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  User clone() => User()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  User copyWith(void Function(User) updates) => super.copyWith((message) => updates(message as User)) as User;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static User create() => User._();
+  User createEmptyInstance() => create();
+  static $pb.PbList<User> createRepeated() => $pb.PbList<User>();
+  @$core.pragma('dart2js:noInline')
+  static User getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<User>(create);
+  static User? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get email => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set email($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasEmail() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearEmail() => clearField(3);
+
+  @$pb.TagNumber(4)
+  Password get password => $_getN(3);
+  @$pb.TagNumber(4)
+  set password(Password v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPassword() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPassword() => clearField(4);
+  @$pb.TagNumber(4)
+  Password ensurePassword() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  $1.Timestamp get createdAt => $_getN(4);
+  @$pb.TagNumber(5)
+  set createdAt($1.Timestamp v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasCreatedAt() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCreatedAt() => clearField(5);
+  @$pb.TagNumber(5)
+  $1.Timestamp ensureCreatedAt() => $_ensure(4);
+}
+
+class Password extends $pb.GeneratedMessage {
+  factory Password({
+    $core.String? password,
+    $core.String? passwordHash,
+  }) {
+    final $result = create();
+    if (password != null) {
+      $result.password = password;
+    }
+    if (passwordHash != null) {
+      $result.passwordHash = passwordHash;
+    }
+    return $result;
+  }
+  Password._() : super();
+  factory Password.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Password.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Password', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'password')
+    ..aOS(2, _omitFieldNames ? '' : 'passwordHash')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  Password clone() => Password()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Password copyWith(void Function(Password) updates) => super.copyWith((message) => updates(message as Password)) as Password;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static Password create() => Password._();
+  Password createEmptyInstance() => create();
+  static $pb.PbList<Password> createRepeated() => $pb.PbList<Password>();
+  @$core.pragma('dart2js:noInline')
+  static Password getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Password>(create);
+  static Password? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get password => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set password($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasPassword() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPassword() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get passwordHash => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set passwordHash($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPasswordHash() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPasswordHash() => clearField(2);
+}
+
+class CreateCourseData extends $pb.GeneratedMessage {
+  factory CreateCourseData({
+    $core.String? title,
+    $core.String? description,
+    $core.Iterable<Track>? tracks,
+    Semester? semester,
+    $core.int? year,
+  }) {
+    final $result = create();
+    if (title != null) {
+      $result.title = title;
+    }
+    if (description != null) {
+      $result.description = description;
+    }
+    if (tracks != null) {
+      $result.tracks.addAll(tracks);
+    }
+    if (semester != null) {
+      $result.semester = semester;
+    }
+    if (year != null) {
+      $result.year = year;
+    }
+    return $result;
+  }
+  CreateCourseData._() : super();
+  factory CreateCourseData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateCourseData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateCourseData', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'title')
+    ..aOS(2, _omitFieldNames ? '' : 'description')
+    ..pc<Track>(3, _omitFieldNames ? '' : 'tracks', $pb.PbFieldType.KE, valueOf: Track.valueOf, enumValues: Track.values, defaultEnumValue: Track.TRACK_UNKNOWN)
+    ..e<Semester>(4, _omitFieldNames ? '' : 'semester', $pb.PbFieldType.OE, defaultOrMaker: Semester.SEMESTER_UNKNOWN, valueOf: Semester.valueOf, enumValues: Semester.values)
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'year', $pb.PbFieldType.O3)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreateCourseData clone() => CreateCourseData()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateCourseData copyWith(void Function(CreateCourseData) updates) => super.copyWith((message) => updates(message as CreateCourseData)) as CreateCourseData;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateCourseData create() => CreateCourseData._();
+  CreateCourseData createEmptyInstance() => create();
+  static $pb.PbList<CreateCourseData> createRepeated() => $pb.PbList<CreateCourseData>();
+  @$core.pragma('dart2js:noInline')
+  static CreateCourseData getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateCourseData>(create);
+  static CreateCourseData? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get title => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set title($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasTitle() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTitle() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get description => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set description($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDescription() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDescription() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.List<Track> get tracks => $_getList(2);
+
+  @$pb.TagNumber(4)
+  Semester get semester => $_getN(3);
+  @$pb.TagNumber(4)
+  set semester(Semester v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasSemester() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearSemester() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get year => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set year($core.int v) { $_setSignedInt32(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasYear() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearYear() => clearField(5);
 }
 
 class CreateCourseRequest extends $pb.GeneratedMessage {
   factory CreateCourseRequest({
-    Course? course,
+    CreateCourseData? data,
   }) {
     final $result = create();
-    if (course != null) {
-      $result.course = course;
+    if (data != null) {
+      $result.data = data;
     }
     return $result;
   }
@@ -280,7 +643,7 @@ class CreateCourseRequest extends $pb.GeneratedMessage {
   factory CreateCourseRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateCourseRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
-    ..aOM<Course>(1, _omitFieldNames ? '' : 'course', subBuilder: Course.create)
+    ..aOM<CreateCourseData>(1, _omitFieldNames ? '' : 'data', subBuilder: CreateCourseData.create)
     ..hasRequiredFields = false
   ;
 
@@ -306,15 +669,15 @@ class CreateCourseRequest extends $pb.GeneratedMessage {
   static CreateCourseRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  Course get course => $_getN(0);
+  CreateCourseData get data => $_getN(0);
   @$pb.TagNumber(1)
-  set course(Course v) { setField(1, v); }
+  set data(CreateCourseData v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasCourse() => $_has(0);
+  $core.bool hasData() => $_has(0);
   @$pb.TagNumber(1)
-  void clearCourse() => clearField(1);
+  void clearData() => clearField(1);
   @$pb.TagNumber(1)
-  Course ensureCourse() => $_ensure(0);
+  CreateCourseData ensureData() => $_ensure(0);
 }
 
 class CreateCourseResponse extends $pb.GeneratedMessage {
@@ -473,11 +836,11 @@ class GetCourseResponse extends $pb.GeneratedMessage {
 
 class UpdateCourseRequest extends $pb.GeneratedMessage {
   factory UpdateCourseRequest({
-    Course? course,
+    CreateCourseData? data,
   }) {
     final $result = create();
-    if (course != null) {
-      $result.course = course;
+    if (data != null) {
+      $result.data = data;
     }
     return $result;
   }
@@ -486,7 +849,7 @@ class UpdateCourseRequest extends $pb.GeneratedMessage {
   factory UpdateCourseRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateCourseRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
-    ..aOM<Course>(1, _omitFieldNames ? '' : 'course', subBuilder: Course.create)
+    ..aOM<CreateCourseData>(1, _omitFieldNames ? '' : 'data', subBuilder: CreateCourseData.create)
     ..hasRequiredFields = false
   ;
 
@@ -512,15 +875,15 @@ class UpdateCourseRequest extends $pb.GeneratedMessage {
   static UpdateCourseRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  Course get course => $_getN(0);
+  CreateCourseData get data => $_getN(0);
   @$pb.TagNumber(1)
-  set course(Course v) { setField(1, v); }
+  set data(CreateCourseData v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasCourse() => $_has(0);
+  $core.bool hasData() => $_has(0);
   @$pb.TagNumber(1)
-  void clearCourse() => clearField(1);
+  void clearData() => clearField(1);
   @$pb.TagNumber(1)
-  Course ensureCourse() => $_ensure(0);
+  CreateCourseData ensureData() => $_ensure(0);
 }
 
 class UpdateCourseResponse extends $pb.GeneratedMessage {
@@ -733,13 +1096,105 @@ class ListCoursesResponse extends $pb.GeneratedMessage {
   $core.List<Course> get courses => $_getList(0);
 }
 
-class CreateNoteRequest extends $pb.GeneratedMessage {
-  factory CreateNoteRequest({
-    Note? note,
+class CreateNoteData extends $pb.GeneratedMessage {
+  factory CreateNoteData({
+    $core.String? courseId,
+    $core.String? title,
+    $core.String? body,
+    $core.String? userId,
   }) {
     final $result = create();
-    if (note != null) {
-      $result.note = note;
+    if (courseId != null) {
+      $result.courseId = courseId;
+    }
+    if (title != null) {
+      $result.title = title;
+    }
+    if (body != null) {
+      $result.body = body;
+    }
+    if (userId != null) {
+      $result.userId = userId;
+    }
+    return $result;
+  }
+  CreateNoteData._() : super();
+  factory CreateNoteData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateNoteData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateNoteData', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'courseId')
+    ..aOS(2, _omitFieldNames ? '' : 'title')
+    ..aOS(3, _omitFieldNames ? '' : 'body')
+    ..aOS(4, _omitFieldNames ? '' : 'userId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreateNoteData clone() => CreateNoteData()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateNoteData copyWith(void Function(CreateNoteData) updates) => super.copyWith((message) => updates(message as CreateNoteData)) as CreateNoteData;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateNoteData create() => CreateNoteData._();
+  CreateNoteData createEmptyInstance() => create();
+  static $pb.PbList<CreateNoteData> createRepeated() => $pb.PbList<CreateNoteData>();
+  @$core.pragma('dart2js:noInline')
+  static CreateNoteData getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateNoteData>(create);
+  static CreateNoteData? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get courseId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set courseId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCourseId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCourseId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get title => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set title($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasTitle() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTitle() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get body => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set body($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasBody() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearBody() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get userId => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set userId($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasUserId() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearUserId() => clearField(4);
+}
+
+class CreateNoteRequest extends $pb.GeneratedMessage {
+  factory CreateNoteRequest({
+    CreateNoteData? data,
+  }) {
+    final $result = create();
+    if (data != null) {
+      $result.data = data;
     }
     return $result;
   }
@@ -748,7 +1203,7 @@ class CreateNoteRequest extends $pb.GeneratedMessage {
   factory CreateNoteRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateNoteRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
-    ..aOM<Note>(1, _omitFieldNames ? '' : 'note', subBuilder: Note.create)
+    ..aOM<CreateNoteData>(1, _omitFieldNames ? '' : 'data', subBuilder: CreateNoteData.create)
     ..hasRequiredFields = false
   ;
 
@@ -774,15 +1229,15 @@ class CreateNoteRequest extends $pb.GeneratedMessage {
   static CreateNoteRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  Note get note => $_getN(0);
+  CreateNoteData get data => $_getN(0);
   @$pb.TagNumber(1)
-  set note(Note v) { setField(1, v); }
+  set data(CreateNoteData v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasNote() => $_has(0);
+  $core.bool hasData() => $_has(0);
   @$pb.TagNumber(1)
-  void clearNote() => clearField(1);
+  void clearData() => clearField(1);
   @$pb.TagNumber(1)
-  Note ensureNote() => $_ensure(0);
+  CreateNoteData ensureData() => $_ensure(0);
 }
 
 class CreateNoteResponse extends $pb.GeneratedMessage {
@@ -941,11 +1396,11 @@ class GetNoteResponse extends $pb.GeneratedMessage {
 
 class UpdateNoteRequest extends $pb.GeneratedMessage {
   factory UpdateNoteRequest({
-    Note? note,
+    CreateNoteData? data,
   }) {
     final $result = create();
-    if (note != null) {
-      $result.note = note;
+    if (data != null) {
+      $result.data = data;
     }
     return $result;
   }
@@ -954,7 +1409,7 @@ class UpdateNoteRequest extends $pb.GeneratedMessage {
   factory UpdateNoteRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateNoteRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
-    ..aOM<Note>(1, _omitFieldNames ? '' : 'note', subBuilder: Note.create)
+    ..aOM<CreateNoteData>(1, _omitFieldNames ? '' : 'data', subBuilder: CreateNoteData.create)
     ..hasRequiredFields = false
   ;
 
@@ -980,15 +1435,15 @@ class UpdateNoteRequest extends $pb.GeneratedMessage {
   static UpdateNoteRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  Note get note => $_getN(0);
+  CreateNoteData get data => $_getN(0);
   @$pb.TagNumber(1)
-  set note(Note v) { setField(1, v); }
+  set data(CreateNoteData v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasNote() => $_has(0);
+  $core.bool hasData() => $_has(0);
   @$pb.TagNumber(1)
-  void clearNote() => clearField(1);
+  void clearData() => clearField(1);
   @$pb.TagNumber(1)
-  Note ensureNote() => $_ensure(0);
+  CreateNoteData ensureData() => $_ensure(0);
 }
 
 class UpdateNoteResponse extends $pb.GeneratedMessage {
@@ -1217,6 +1672,604 @@ class ListNotesResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<Note> get notes => $_getList(0);
+}
+
+class File extends $pb.GeneratedMessage {
+  factory File({
+    $core.String? id,
+    $core.String? courseId,
+    $core.List<$core.int>? content,
+    $core.String? filename,
+    User? publisher,
+    $1.Timestamp? createdAt,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    if (courseId != null) {
+      $result.courseId = courseId;
+    }
+    if (content != null) {
+      $result.content = content;
+    }
+    if (filename != null) {
+      $result.filename = filename;
+    }
+    if (publisher != null) {
+      $result.publisher = publisher;
+    }
+    if (createdAt != null) {
+      $result.createdAt = createdAt;
+    }
+    return $result;
+  }
+  File._() : super();
+  factory File.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory File.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'File', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'id')
+    ..aOS(2, _omitFieldNames ? '' : 'courseId')
+    ..a<$core.List<$core.int>>(3, _omitFieldNames ? '' : 'content', $pb.PbFieldType.OY)
+    ..aOS(4, _omitFieldNames ? '' : 'filename')
+    ..aOM<User>(5, _omitFieldNames ? '' : 'publisher', subBuilder: User.create)
+    ..aOM<$1.Timestamp>(6, _omitFieldNames ? '' : 'createdAt', subBuilder: $1.Timestamp.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  File clone() => File()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  File copyWith(void Function(File) updates) => super.copyWith((message) => updates(message as File)) as File;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static File create() => File._();
+  File createEmptyInstance() => create();
+  static $pb.PbList<File> createRepeated() => $pb.PbList<File>();
+  @$core.pragma('dart2js:noInline')
+  static File getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<File>(create);
+  static File? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get courseId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set courseId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCourseId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCourseId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.List<$core.int> get content => $_getN(2);
+  @$pb.TagNumber(3)
+  set content($core.List<$core.int> v) { $_setBytes(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasContent() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearContent() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get filename => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set filename($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasFilename() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearFilename() => clearField(4);
+
+  @$pb.TagNumber(5)
+  User get publisher => $_getN(4);
+  @$pb.TagNumber(5)
+  set publisher(User v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasPublisher() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearPublisher() => clearField(5);
+  @$pb.TagNumber(5)
+  User ensurePublisher() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  $1.Timestamp get createdAt => $_getN(5);
+  @$pb.TagNumber(6)
+  set createdAt($1.Timestamp v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasCreatedAt() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearCreatedAt() => clearField(6);
+  @$pb.TagNumber(6)
+  $1.Timestamp ensureCreatedAt() => $_ensure(5);
+}
+
+class CreateFileData extends $pb.GeneratedMessage {
+  factory CreateFileData({
+    $core.String? courseId,
+    $core.List<$core.int>? content,
+    $core.String? filename,
+    $core.String? userId,
+  }) {
+    final $result = create();
+    if (courseId != null) {
+      $result.courseId = courseId;
+    }
+    if (content != null) {
+      $result.content = content;
+    }
+    if (filename != null) {
+      $result.filename = filename;
+    }
+    if (userId != null) {
+      $result.userId = userId;
+    }
+    return $result;
+  }
+  CreateFileData._() : super();
+  factory CreateFileData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateFileData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateFileData', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'courseId')
+    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'content', $pb.PbFieldType.OY)
+    ..aOS(3, _omitFieldNames ? '' : 'filename')
+    ..aOS(4, _omitFieldNames ? '' : 'userId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreateFileData clone() => CreateFileData()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateFileData copyWith(void Function(CreateFileData) updates) => super.copyWith((message) => updates(message as CreateFileData)) as CreateFileData;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateFileData create() => CreateFileData._();
+  CreateFileData createEmptyInstance() => create();
+  static $pb.PbList<CreateFileData> createRepeated() => $pb.PbList<CreateFileData>();
+  @$core.pragma('dart2js:noInline')
+  static CreateFileData getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateFileData>(create);
+  static CreateFileData? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get courseId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set courseId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCourseId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCourseId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.List<$core.int> get content => $_getN(1);
+  @$pb.TagNumber(2)
+  set content($core.List<$core.int> v) { $_setBytes(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasContent() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearContent() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get filename => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set filename($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasFilename() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearFilename() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get userId => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set userId($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasUserId() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearUserId() => clearField(4);
+}
+
+class CreateFileRequest extends $pb.GeneratedMessage {
+  factory CreateFileRequest({
+    CreateFileData? data,
+  }) {
+    final $result = create();
+    if (data != null) {
+      $result.data = data;
+    }
+    return $result;
+  }
+  CreateFileRequest._() : super();
+  factory CreateFileRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateFileRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateFileRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOM<CreateFileData>(1, _omitFieldNames ? '' : 'data', subBuilder: CreateFileData.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreateFileRequest clone() => CreateFileRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateFileRequest copyWith(void Function(CreateFileRequest) updates) => super.copyWith((message) => updates(message as CreateFileRequest)) as CreateFileRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateFileRequest create() => CreateFileRequest._();
+  CreateFileRequest createEmptyInstance() => create();
+  static $pb.PbList<CreateFileRequest> createRepeated() => $pb.PbList<CreateFileRequest>();
+  @$core.pragma('dart2js:noInline')
+  static CreateFileRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateFileRequest>(create);
+  static CreateFileRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  CreateFileData get data => $_getN(0);
+  @$pb.TagNumber(1)
+  set data(CreateFileData v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasData() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearData() => clearField(1);
+  @$pb.TagNumber(1)
+  CreateFileData ensureData() => $_ensure(0);
+}
+
+class CreateFileResponse extends $pb.GeneratedMessage {
+  factory CreateFileResponse({
+    File? file,
+  }) {
+    final $result = create();
+    if (file != null) {
+      $result.file = file;
+    }
+    return $result;
+  }
+  CreateFileResponse._() : super();
+  factory CreateFileResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateFileResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateFileResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOM<File>(1, _omitFieldNames ? '' : 'file', subBuilder: File.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreateFileResponse clone() => CreateFileResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateFileResponse copyWith(void Function(CreateFileResponse) updates) => super.copyWith((message) => updates(message as CreateFileResponse)) as CreateFileResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateFileResponse create() => CreateFileResponse._();
+  CreateFileResponse createEmptyInstance() => create();
+  static $pb.PbList<CreateFileResponse> createRepeated() => $pb.PbList<CreateFileResponse>();
+  @$core.pragma('dart2js:noInline')
+  static CreateFileResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateFileResponse>(create);
+  static CreateFileResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  File get file => $_getN(0);
+  @$pb.TagNumber(1)
+  set file(File v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasFile() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFile() => clearField(1);
+  @$pb.TagNumber(1)
+  File ensureFile() => $_ensure(0);
+}
+
+class GetFileRequest extends $pb.GeneratedMessage {
+  factory GetFileRequest({
+    $core.String? id,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    return $result;
+  }
+  GetFileRequest._() : super();
+  factory GetFileRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetFileRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetFileRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetFileRequest clone() => GetFileRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetFileRequest copyWith(void Function(GetFileRequest) updates) => super.copyWith((message) => updates(message as GetFileRequest)) as GetFileRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetFileRequest create() => GetFileRequest._();
+  GetFileRequest createEmptyInstance() => create();
+  static $pb.PbList<GetFileRequest> createRepeated() => $pb.PbList<GetFileRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetFileRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetFileRequest>(create);
+  static GetFileRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class GetFileResponse extends $pb.GeneratedMessage {
+  factory GetFileResponse({
+    File? file,
+  }) {
+    final $result = create();
+    if (file != null) {
+      $result.file = file;
+    }
+    return $result;
+  }
+  GetFileResponse._() : super();
+  factory GetFileResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetFileResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetFileResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOM<File>(1, _omitFieldNames ? '' : 'file', subBuilder: File.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetFileResponse clone() => GetFileResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetFileResponse copyWith(void Function(GetFileResponse) updates) => super.copyWith((message) => updates(message as GetFileResponse)) as GetFileResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetFileResponse create() => GetFileResponse._();
+  GetFileResponse createEmptyInstance() => create();
+  static $pb.PbList<GetFileResponse> createRepeated() => $pb.PbList<GetFileResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetFileResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetFileResponse>(create);
+  static GetFileResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  File get file => $_getN(0);
+  @$pb.TagNumber(1)
+  set file(File v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasFile() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFile() => clearField(1);
+  @$pb.TagNumber(1)
+  File ensureFile() => $_ensure(0);
+}
+
+class DeleteFileRequest extends $pb.GeneratedMessage {
+  factory DeleteFileRequest({
+    $core.String? id,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    return $result;
+  }
+  DeleteFileRequest._() : super();
+  factory DeleteFileRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DeleteFileRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteFileRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  DeleteFileRequest clone() => DeleteFileRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  DeleteFileRequest copyWith(void Function(DeleteFileRequest) updates) => super.copyWith((message) => updates(message as DeleteFileRequest)) as DeleteFileRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeleteFileRequest create() => DeleteFileRequest._();
+  DeleteFileRequest createEmptyInstance() => create();
+  static $pb.PbList<DeleteFileRequest> createRepeated() => $pb.PbList<DeleteFileRequest>();
+  @$core.pragma('dart2js:noInline')
+  static DeleteFileRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteFileRequest>(create);
+  static DeleteFileRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+}
+
+class DeleteFileResponse extends $pb.GeneratedMessage {
+  factory DeleteFileResponse() => create();
+  DeleteFileResponse._() : super();
+  factory DeleteFileResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DeleteFileResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteFileResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  DeleteFileResponse clone() => DeleteFileResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  DeleteFileResponse copyWith(void Function(DeleteFileResponse) updates) => super.copyWith((message) => updates(message as DeleteFileResponse)) as DeleteFileResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeleteFileResponse create() => DeleteFileResponse._();
+  DeleteFileResponse createEmptyInstance() => create();
+  static $pb.PbList<DeleteFileResponse> createRepeated() => $pb.PbList<DeleteFileResponse>();
+  @$core.pragma('dart2js:noInline')
+  static DeleteFileResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteFileResponse>(create);
+  static DeleteFileResponse? _defaultInstance;
+}
+
+class ListFilesRequest extends $pb.GeneratedMessage {
+  factory ListFilesRequest({
+    $core.String? courseId,
+  }) {
+    final $result = create();
+    if (courseId != null) {
+      $result.courseId = courseId;
+    }
+    return $result;
+  }
+  ListFilesRequest._() : super();
+  factory ListFilesRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListFilesRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListFilesRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'courseId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ListFilesRequest clone() => ListFilesRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ListFilesRequest copyWith(void Function(ListFilesRequest) updates) => super.copyWith((message) => updates(message as ListFilesRequest)) as ListFilesRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListFilesRequest create() => ListFilesRequest._();
+  ListFilesRequest createEmptyInstance() => create();
+  static $pb.PbList<ListFilesRequest> createRepeated() => $pb.PbList<ListFilesRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ListFilesRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListFilesRequest>(create);
+  static ListFilesRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get courseId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set courseId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCourseId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCourseId() => clearField(1);
+}
+
+class ListFilesResponse extends $pb.GeneratedMessage {
+  factory ListFilesResponse({
+    $core.Iterable<File>? files,
+  }) {
+    final $result = create();
+    if (files != null) {
+      $result.files.addAll(files);
+    }
+    return $result;
+  }
+  ListFilesResponse._() : super();
+  factory ListFilesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListFilesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListFilesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..pc<File>(1, _omitFieldNames ? '' : 'files', $pb.PbFieldType.PM, subBuilder: File.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ListFilesResponse clone() => ListFilesResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ListFilesResponse copyWith(void Function(ListFilesResponse) updates) => super.copyWith((message) => updates(message as ListFilesResponse)) as ListFilesResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListFilesResponse create() => ListFilesResponse._();
+  ListFilesResponse createEmptyInstance() => create();
+  static $pb.PbList<ListFilesResponse> createRepeated() => $pb.PbList<ListFilesResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ListFilesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListFilesResponse>(create);
+  static ListFilesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<File> get files => $_getList(0);
 }
 
 

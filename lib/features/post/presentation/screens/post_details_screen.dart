@@ -1,7 +1,6 @@
 import 'package:booky/common/widgets/common_app_bar.dart';
+import 'package:booky/proto/generated/booky.pb.dart';
 import 'package:flutter/material.dart';
-
-import '../../../courses/data/bloc/courses_cubit/courses_list_cubit.dart';
 
 class PostDetailsScreen extends StatelessWidget {
   const PostDetailsScreen({super.key, required this.note});

@@ -4,7 +4,7 @@ import 'package:grpc/grpc.dart' as grpc;
 
 import 'booky_service.dart';
 
-const int serverPort = 5555;
+const int serverPort = 4000;
 
 class BookyServer {
   Future<void> run() async {

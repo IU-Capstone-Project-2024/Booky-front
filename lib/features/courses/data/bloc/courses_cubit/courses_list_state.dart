@@ -1,13 +1,9 @@
 part of 'courses_list_cubit.dart';
 
-@immutable
-sealed class CoursesListState {}
-
-final class CoursesListInitial extends CoursesListState {}
-
-final class CoursesListLoading extends CoursesListState {}
-
-final class CoursesListLoaded extends CoursesListState {
-  final List<Course> courses;
-  CoursesListLoaded(this.courses);
+@freezed
+abstract class CoursesListState with _$CoursesListState {
+  const factory CoursesListState.initial() = _CoursesListInitial;
+  const factory CoursesListState.loaded(List<Course> courses) = _CoursesListLoaded;
+  const factory CoursesListState.error() = _CoursesListError;
+  const factory CoursesListState.loading() = _CoursesListLoading;
 }

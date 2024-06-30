@@ -1,115 +1,59 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
-import 'package:localstore/localstore.dart';
-import 'package:meta/meta.dart';
-import 'package:protobuf/protobuf.dart';
+import 'package:booky/getit.dart';
+import 'package:booky/proto/client/booky_client.dart';
 import 'package:booky/proto/generated/booky.pb.dart';
+import 'package:booky/proto/generated/booky.pbgrpc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:grpc/service_api.dart';
+import 'package:injectable/injectable.dart';
 
 part 'courses_list_state.dart';
+part 'courses_list_cubit.freezed.dart';
 
 const String idKey = 'idKey';
 const String coursesCollection = 'courses';
 
+@LazySingleton()
 class CoursesListCubit extends Cubit<CoursesListState> {
-  CoursesListCubit() : super(CoursesListInitial());
+  CoursesListCubit() : super(const CoursesListState.initial());
+
+  Semester choosenSemester = Semester.SEMESTER_SUMMER;
+  int year = 2024;
+
+  final BookyTerminalClient client = getIt.get<BookyTerminalClient>();
+  BookyServiceClient get stub => client.clientStub;
 
   Future<void> fetchCourses([String searchingTitle = '']) async {
-    courses.clear;
-    emit(CoursesListLoading());
-    final db = Localstore.instance;
-    final List<String> keys =
-        (await db.collection(coursesCollection).doc().get())?.keys.toList() ??
-            [];
-    for (String key in keys) {
-      final Course course = Course.fromJson(
-          (await db.collection(coursesCollection).doc().get())?[key]);
-      if (course.title.contains(searchingTitle) && searchingTitle != '') {
-        courses.add(course);
-      }
-    }
-    emit(CoursesListLoaded(courses));
+    emit(const CoursesListState.loading());
+
+    courses.clear();
+    courses.addAll((await stub.listCourses(ListCoursesRequest())).courses);
+
+    emit(CoursesListState.loaded(courses));
   }
 
   Future<void> addCourse(Course course) async {
-    final db = Localstore.instance;
+    emit(CoursesListState.loaded(courses));
+  }
 
-    Random random = Random();
-    int id = random.nextInt(4294967295);
-
-    course.id = id.toString();
-    courses.add(course);
-    Map<String, dynamic> mapToSave = {};
-    for (Course course in courses) {
-      mapToSave[course.id] = course.toJson();
-    }
-    await db.collection(coursesCollection).doc().set(mapToSave);
-
-    emit(CoursesListLoaded(courses));
+  Future<void> addFakeCourse() async {
+    stub.createCourse(CreateCourseRequest(
+      data: CreateCourseData(
+        title: 'Introduction to AI',
+        description: 'Description',
+        tracks: [
+          Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE,
+          Track.TRACK_DATA_SCIENCE,
+        ],
+        semester: Semester.SEMESTER_FALL,
+        year: 2023,
+      ),
+    )).then((_) => fetchCourses());
   }
 
   Future<void> updateCourse(Course course) async {
-    final db = Localstore.instance;
-
-    courses.removeWhere((c) => c.id == course.id);
-    courses.add(course);
-
-    Map<String, dynamic> mapToSave = {};
-    for (Course course in courses) {
-      mapToSave[course.id] = course.toJson();
-    }
-    await db.collection(coursesCollection).doc().set(mapToSave);
-
-    emit(CoursesListLoaded(courses));
+    emit(CoursesListState.loaded(courses));
   }
 
   final List<Course> courses = [];
-}
-
-class Course {
-  Course({required this.id, required this.title, required this.notes});
-
-  String id;
-  String title;
-  List<Note> notes;
-
-  factory Course.fromJson(Map<String, dynamic> json) {
-    return Course(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      notes: json['notes'].map((e) => Note.fromJson(e)).toList(),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'notes': notes.map((e) => e.toJson()).toList(),
-    };
-  }
-}
-
-class Note {
-  Note({required this.id, required this.title, required this.body});
-
-  String id;
-  String title;
-  String body;
-
-  factory Note.fromJson(Map<String, dynamic> json) {
-    return Note(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      body: json['body'] as String,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'body': body,
-    };
-  }
 }
