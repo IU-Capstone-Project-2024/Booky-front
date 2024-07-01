@@ -2,6 +2,8 @@ import 'package:booky/proto/generated/booky.pbgrpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:injectable/injectable.dart';
 
+// const String userId;
+
 @LazySingleton()
 class BookyTerminalClient {
   late final ClientChannel _channel;
@@ -39,3 +41,12 @@ Future<void> test() async {
   print(await clientApp.clientStub.listCourses(ListCoursesRequest()));
   clientApp.shutdown();
 }
+
+// Future<void> createTestUser() async {
+//   final clientApp = BookyTerminalClient();
+//   await clientApp.clientStub.(
+    
+//   );
+//   print(await clientApp.clientStub.listCourses(ListCoursesRequest()));
+//   clientApp.shutdown();
+// }

@@ -37,7 +37,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
         ),
       ),
       backgroundColor: AppColors.white,
-      centerTitle: true,
+      centerTitle: widget.centerTitle,
       leading: widget.leading ??
           IconButton(
             onPressed: () {

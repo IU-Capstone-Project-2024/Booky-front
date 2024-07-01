@@ -16,4 +16,6 @@ abstract class AppColors {
   static const Color black = Colors.black;
 
   static const Color white = Colors.white;
+
+  static const Color editableText = Color(0xff808080);
 }

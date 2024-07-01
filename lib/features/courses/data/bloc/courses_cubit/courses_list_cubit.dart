@@ -29,7 +29,23 @@ class CoursesListCubit extends Cubit<CoursesListState> {
     courses.clear();
     courses.addAll((await stub.listCourses(ListCoursesRequest())).courses);
 
-    emit(CoursesListState.loaded(courses));
+    final List<Course> coursesToShow = courses.where((Course course) {
+      if (course.semester != choosenSemester) {
+        return false;
+      }
+      if (year != course.year) {
+        return false;
+      }
+      if (searchingTitle.isEmpty) {
+        return true;
+      }
+      if (course.title.toLowerCase().contains(searchingTitle.toLowerCase())) {
+        return true;
+      }
+      return false;
+    }).toList();
+
+    emit(CoursesListState.loaded(coursesToShow));
   }
 
   Future<void> addCourse(Course course) async {

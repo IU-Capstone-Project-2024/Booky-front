@@ -19,4 +19,34 @@ abstract class AppStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.descriptionColor,
   );
+
+  static const TextStyle title2Medium = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.normal,
+    color: AppColors.titleColor,
+  );
+
+  static const TextStyle title2MediumInactive = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    color: AppColors.inactiveTitleColor,
+  );
+
+  static const TextStyle greyTitle = TextStyle(
+    fontSize: 24,
+    color: AppColors.editableText,
+    fontWeight: FontWeight.w400,
+  );
+
+  static const TextStyle greyDescription = TextStyle(
+    fontSize: 16,
+    color: AppColors.editableText,
+    fontWeight: FontWeight.w300,
+  );
+
+  static const TextStyle settingsTitle = TextStyle(
+    fontSize: 22,
+    color: AppColors.black,
+    fontWeight: FontWeight.w500,
+  );
 }

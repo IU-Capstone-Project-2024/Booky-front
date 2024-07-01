@@ -13,6 +13,7 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import 'features/courses/data/bloc/courses_cubit/courses_list_cubit.dart'
     as _i3;
+import 'features/courses/data/bloc/notes_cubit/notes_cubit.dart' as _i5;
 import 'proto/client/booky_client.dart' as _i4;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -28,6 +29,7 @@ extension GetItInjectableX on _i1.GetIt {
     );
     gh.lazySingleton<_i3.CoursesListCubit>(() => _i3.CoursesListCubit());
     gh.lazySingleton<_i4.BookyTerminalClient>(() => _i4.BookyTerminalClient());
+    gh.lazySingleton<_i5.NotesCubit>(() => _i5.NotesCubit());
     return this;
   }
 }

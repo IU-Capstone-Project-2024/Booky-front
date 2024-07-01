@@ -26,7 +26,7 @@ class CreatePostScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icons.done,
+          icon: const Icon(Icons.done),
         ),
         appBar: const CommonAppBar(
           title: 'New post',

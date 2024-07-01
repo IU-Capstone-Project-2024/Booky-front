@@ -1,4 +1,9 @@
+import 'package:booky/common/app_colors.dart/app_colors.dart';
+import 'package:booky/common/app_styles.dart';
+import 'package:booky/common/utils.dart';
 import 'package:booky/common/widgets/common_app_bar.dart';
+import 'package:booky/common/widgets/common_drawer.dart';
+import 'package:booky/proto/generated/booky.pbenum.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -9,50 +14,208 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  String value = 'en';
+  String program = 'BS';
+  int year = 1;
+  Track track = Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: const CommonAppBar(title: 'Settings'),
+        backgroundColor: AppColors.mainBackgroundColor,
+        appBar: CommonAppBar(
+          title: 'Settings',
+          leading: Builder(builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              color: AppColors.titleColor,
+            );
+          }),
+        ),
+        drawer: buildDrawer(context),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+          child: Column(
             children: [
-              Text(
-                'Choose your language',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 20.0,
-                    ),
-              ),
-              DropdownButton(
-                dropdownColor: Colors.white,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(fontSize: 16.0),
-                value: value,
-                items: const [
-                  DropdownMenuItem(
-                    value: 'ru',
-                    child: Text('Russian'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Education program',
+                    style: AppStyles.settingsTitle,
                   ),
-                  DropdownMenuItem(
-                    value: 'en',
-                    child: Text('English'),
+                  DropDownButtonDecoration(
+                    child: DropdownButton(
+                      underline: const SizedBox(),
+                      borderRadius: BorderRadius.circular(15),
+                      dropdownColor: AppColors.mainBackgroundColor,
+                      iconSize: 40,
+                      style: AppStyles.settingsTitle.copyWith(fontSize: 18),
+                      value: program,
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'BS',
+                          child: Text('BS'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'MS',
+                          child: Text('MS'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'PhD',
+                          child: Text('PhD'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            year = 1;
+                            program = value.toString();
+                          });
+                        }
+                      },
+                    ),
                   ),
                 ],
-                onChanged: (value) {
-                  setState(() {
-                    this.value = value.toString();
-                  });
-                },
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Education year',
+                    style: AppStyles.settingsTitle,
+                  ),
+                  DropDownButtonDecoration(
+                    child: DropdownButton<int>(
+                      underline: const SizedBox(),
+                      borderRadius: BorderRadius.circular(15),
+                      dropdownColor: AppColors.mainBackgroundColor,
+                      iconSize: 40,
+                      style: AppStyles.settingsTitle.copyWith(fontSize: 18),
+                      value: year,
+                      items: yearValues(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            year = value;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Education track',
+                    style: AppStyles.settingsTitle,
+                  ),
+                  DropDownButtonDecoration(
+                    child: DropdownButton<Track>(
+                      underline: const SizedBox(),
+                      borderRadius: BorderRadius.circular(15),
+                      dropdownColor: AppColors.mainBackgroundColor,
+                      iconSize: 40,
+                      style: AppStyles.settingsTitle.copyWith(fontSize: 18),
+                      value: track,
+                      items: trackValues(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            track = value;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  List<DropdownMenuItem<Track>> trackValues() {
+    final List<Track> tracs = [
+      Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE,
+      Track.TRACK_DATA_SCIENCE,
+      Track.TRACK_SOFTWARE_DEVELOPMENT,
+      Track.TRACK_GAME_DEVELOPMENT,
+      Track.TRACK_ROBOTICS,
+      Track.TRACK_DATA_SCIENCE,
+    ];
+
+    List<DropdownMenuItem<Track>> items = [];
+    for (Track track in tracs) {
+      items.add(DropdownMenuItem<Track>(
+        value: track,
+        child: Text(trackToString(track)),
+      ));
+    }
+    return items;
+  }
+
+  List<DropdownMenuItem<int>> yearValues() {
+    late final int maxYear;
+
+    switch (program) {
+      case 'BS':
+        maxYear = 4;
+        break;
+      case 'MS':
+        maxYear = 2;
+        break;
+      case 'PhD':
+        maxYear = 1;
+        break;
+      default:
+        maxYear = 4;
+        break;
+    }
+
+    List<DropdownMenuItem<int>> items = [];
+    for (int i = 1; i <= maxYear; i++) {
+      items.add(DropdownMenuItem<int>(
+        value: i,
+        child: Text('$i'),
+      ));
+    }
+    return items;
+  }
+}
+
+class DropDownButtonDecoration extends StatelessWidget {
+  final DropdownButton child;
+
+  const DropDownButtonDecoration({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 114,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.transparent,
+        border: Border.all(
+          color: AppColors.inactiveTitleColor,
+          width: 3,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          child,
+        ],
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:booky/common/app_colors.dart/app_colors.dart';
 import 'package:booky/common/app_styles.dart';
 import 'package:booky/common/constants.dart';
 import 'package:booky/common/widgets/common_app_bar.dart';
+import 'package:booky/common/widgets/common_drawer.dart';
 import 'package:booky/common/widgets/common_floating_action_button.dart';
 import 'package:booky/features/courses/screens/create_course_screen.dart';
 import 'package:booky/features/courses/widgets/course_list_item.dart';
@@ -12,6 +13,7 @@ import 'package:booky/main.dart';
 import 'package:booky/proto/generated/booky.pbenum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg_icons/flutter_svg_icons.dart';
 
 import '../../../getit.dart';
 import '../data/bloc/courses_cubit/courses_list_cubit.dart';
@@ -32,7 +34,17 @@ class _CoursesScreenState extends State<CoursesScreen> {
   @override
   void initState() {
     super.initState();
-    titleController = TextEditingController();
+    titleController = TextEditingController()..addListener(titleListener);
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
+
+  void titleListener() {
+    getIt.get<CoursesListCubit>().fetchCourses(titleController.text);
   }
 
   @override
@@ -42,7 +54,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
         value: getIt.get<CoursesListCubit>(),
         child: Scaffold(
           backgroundColor: AppColors.mainBackgroundColor,
-          drawer: _buildDrawer(context),
+          drawer: buildDrawer(context),
           appBar: CommonAppBar(
             centerTitle: false,
             titleWidget: Row(
@@ -104,7 +116,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                 itemCount: courses.length,
                                 itemBuilder: (context, index) {
                                   return Padding(
-                                    padding: const EdgeInsets.only(bottom: 16.0),
+                                    padding:
+                                        const EdgeInsets.only(bottom: 16.0),
                                     child: CourseListItem(
                                       course: courses[index],
                                     ),
@@ -122,36 +135,6 @@ class _CoursesScreenState extends State<CoursesScreen> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDrawer(BuildContext context) {
-    return Drawer(
-      shape: const RoundedRectangleBorder(),
-      width: MediaQuery.of(context).size.width * 0.9,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 16.0),
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const SizedBox(height: 64),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
         ),
       ),
     );

@@ -2,6 +2,8 @@ import 'package:booky/features/courses/screens/courses_screen.dart';
 import 'package:booky/getit.dart';
 import 'package:flutter/material.dart';
 
+const String testUserId = '0';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
