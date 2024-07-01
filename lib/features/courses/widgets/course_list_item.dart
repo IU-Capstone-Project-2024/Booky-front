@@ -1,5 +1,6 @@
 import 'package:booky/common/app_colors.dart/app_colors.dart';
 import 'package:booky/common/app_styles.dart';
+import 'package:booky/common/constants/constants.dart';
 import 'package:booky/common/utils.dart';
 import 'package:booky/features/post/presentation/screens/posts_screen.dart';
 import 'package:booky/proto/generated/booky.pb.dart';
@@ -19,8 +20,12 @@ class CourseListItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => PostsScreen(course: course),
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => PostsScreen(course: course),
+            transitionDuration: const Duration(milliseconds: routerTransitionDuration),
+            reverseTransitionDuration: const Duration(milliseconds: routerTransitionDuration),
+            transitionsBuilder: (_, a, __, c) =>
+                FadeTransition(opacity: a, child: c),
           ),
         );
       },
