@@ -7,9 +7,8 @@ import 'package:booky/features/post/presentation/widgets/note_list_item.dart';
 import 'package:booky/getit.dart';
 import 'package:booky/proto/generated/booky.pb.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../common/widgets/dial_floating_action_button.dart';
 
 class PostsScreen extends StatelessWidget {
   PostsScreen({
@@ -106,6 +105,7 @@ class PostsScreen extends StatelessWidget {
                   course,
                   Note(body: body, title: title),
                 );
+            Navigator.of(context).pop();
           },
         );
       },
@@ -114,8 +114,9 @@ class PostsScreen extends StatelessWidget {
 }
 
 class _CreateNoteBottomsheet extends StatefulWidget {
-  const _CreateNoteBottomsheet(this.saveNote);
+  const _CreateNoteBottomsheet(this.saveNote, [this.note]);
 
+  final Note? note;
   final void Function(String title, String body) saveNote;
 
   @override
@@ -125,6 +126,16 @@ class _CreateNoteBottomsheet extends StatefulWidget {
 class __CreateNoteBottomsheetState extends State<_CreateNoteBottomsheet> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.note != null) {
+      _titleController.text = widget.note!.title;
+      _bodyController.text = widget.note!.body;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,18 +159,31 @@ class __CreateNoteBottomsheetState extends State<_CreateNoteBottomsheet> {
               children: [
                 TextFormField(
                   controller: _titleController,
-                  style: AppStyles.greyTitle,
+                  style: AppStyles.greyTitle.copyWith(color: AppColors.black),
                   decoration: const InputDecoration(
                     hintText: 'Post title',
                     border: InputBorder.none,
                     hintStyle: AppStyles.greyTitle,
                   ),
                 ),
+                if (widget.note != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          widget.note!.publisher.name,
+                          style: AppStyles.description.copyWith(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
                 SingleChildScrollView(
                   child: TextField(
                     controller: _bodyController,
                     keyboardType: TextInputType.multiline,
-                    style: AppStyles.greyDescription,
+                    style: AppStyles.greyDescription
+                        .copyWith(color: AppColors.black),
                     maxLines: null,
                     decoration: const InputDecoration(
                       hintText: 'Post text',
@@ -263,10 +287,23 @@ class FilesList extends StatelessWidget {
   }
 }
 
-class PostsList extends StatelessWidget {
+class PostsList extends StatefulWidget {
   final Course course;
 
   const PostsList({super.key, required this.course});
+
+  @override
+  State<PostsList> createState() => _PostsListState();
+}
+
+class _PostsListState extends State<PostsList> {
+  Offset _tapPosition = Offset.zero;
+
+  late RenderBox overlay;
+
+  void _storePosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -275,7 +312,7 @@ class PostsList extends StatelessWidget {
       builder: (context, state) {
         return state.when(
           initial: () {
-            getIt.get<NotesCubit>().fetchNotes(course);
+            getIt.get<NotesCubit>().fetchNotes(widget.course);
             return const Center(child: CircularProgressIndicator());
           },
           loaded: (notes) {
@@ -286,24 +323,156 @@ class PostsList extends StatelessWidget {
                 style: AppStyles.title2Medium,
               ));
             }
-            return ListView.builder(
-              itemCount: notes.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0, top: 16.0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: NoteListItem(
-                      course: course,
-                      note: notes[index],
+            return Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: ListView.builder(
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
+                    child: GestureDetector(
+                      onTapDown: _storePosition,
+                      child: ListTile(
+                        onLongPress: () {
+                          _showMenu(
+                            context,
+                            RelativeRect.fromLTRB(
+                              _tapPosition.dx,
+                              _tapPosition.dy,
+                              MediaQuery.of(context).size.width -
+                                  _tapPosition.dx,
+                              MediaQuery.of(context).size.height -
+                                  _tapPosition.dy,
+                            ),
+                          );
+                        },
+                        onTap: () {
+                          _openBottomsheet(context, notes[index]);
+                        },
+                        title: NoteListItem(
+                          course: widget.course,
+                          note: notes[index],
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           },
           error: () => const Center(child: Text('Error')),
           loading: () => const Center(child: CircularProgressIndicator()),
+        );
+      },
+    );
+  }
+
+  void _showMenu(BuildContext context, RelativeRect position) => showMenu(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        color: AppColors.dialogBackgroundColor,
+        context: context,
+        position: position,
+        items: [
+          PopupMenuItem<int>(
+            value: 0,
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.report_gmailerrorred,
+                  color: AppColors.darkTitleColor,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Complain',
+                  style: AppStyles.greyTitle.copyWith(
+                    fontSize: 12,
+                    color: AppColors.darkTitleColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          PopupMenuItem<int>(
+            value: 1,
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.edit,
+                  color: AppColors.darkTitleColor,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Edit',
+                  style: AppStyles.greyTitle.copyWith(
+                    fontSize: 12,
+                    color: AppColors.darkTitleColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          PopupMenuItem<int>(
+            value: 2,
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.delete,
+                  color: AppColors.darkTitleColor,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Delete',
+                  style: AppStyles.greyTitle.copyWith(
+                    fontSize: 12,
+                    color: AppColors.darkTitleColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ).then((value) {
+        if (value != null) {
+          // Handle menu item selection here
+          if (value == 0) {
+            // Complain action
+          } else if (value == 1) {
+            // Edit action
+          } else if (value == 2) {
+            // Delete action
+          }
+        }
+      });
+
+  void _openBottomsheet(BuildContext context, Note note) {
+    showModalBottomSheet(
+      scrollControlDisabledMaxHeightRatio: 0.9,
+      context: context,
+      showDragHandle: true,
+      useSafeArea: true,
+      enableDrag: true,
+      isDismissible: false,
+      backgroundColor: AppColors.mainBackgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(28),
+          topRight: Radius.circular(28),
+        ),
+      ),
+      builder: (context) {
+        return _CreateNoteBottomsheet(
+          (title, body) {
+            if (title != note.title || body != note.body) {
+              getIt.get<NotesCubit>().updateNote(
+                    widget.course,
+                    Note(body: body, title: title),
+                  );
+            }
+            Navigator.of(context).pop();
+          },
+          note,
         );
       },
     );

@@ -16,7 +16,7 @@ class NoteListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: AppColors.white,
@@ -57,15 +57,15 @@ class NoteListItem extends StatelessWidget {
               ),
             ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text(
-                'updated 01/01/2024 12:35',
-                style: AppStyles.description,
-              ),
-            ],
-          ),
+          // const Column(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Text(
+          //       'updated 01/01/2024 12:35',
+          //       style: AppStyles.description,
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

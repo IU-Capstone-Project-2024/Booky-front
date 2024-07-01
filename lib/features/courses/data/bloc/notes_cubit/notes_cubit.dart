@@ -24,23 +24,22 @@ class NotesCubit extends Cubit<NotesState> {
     _notes.addAll(
         (await stub.listNotes(ListNotesRequest(courseId: course.id))).notes);
 
-    // _notes.add(Note(
-    //   body: 'test body',
-    //   title: 'test title',
-    //   id: 'test id',
-    //   courseId: course.id,
-    //   publisher: User(
-    //     id: 'test id',
-    //     name: 'test name',
-    //     email: 'test email',
-    //     password: Password(
-    //       password: 'test password',
-    //       passwordHash: '123',
-    //     ),
-    //   ),
-    // ));
-
     emit(NotesState.loaded(_notes));
+  }
+
+  void updateNote(Course course, Note note) async {
+    emit(const NotesState.loading());
+
+    await stub.updateNote(UpdateNoteRequest(
+      data: CreateNoteData(
+        userId: '1',
+        title: note.title,
+        body: note.body,
+        courseId: course.id,
+      ),
+    ));
+
+    fetchNotes(course);
   }
 
   void saveNote(Course course, Note note) async {
