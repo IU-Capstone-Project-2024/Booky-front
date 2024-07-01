@@ -24,21 +24,21 @@ class NotesCubit extends Cubit<NotesState> {
     _notes.addAll(
         (await stub.listNotes(ListNotesRequest(courseId: course.id))).notes);
 
-    _notes.add(Note(
-      body: 'test body',
-      title: 'test title',
-      id: 'test id',
-      courseId: course.id,
-      publisher: User(
-        id: 'test id',
-        name: 'test name',
-        email: 'test email',
-        password: Password(
-          password: 'test password',
-          passwordHash: '123',
-        ),
-      ),
-    ));
+    // _notes.add(Note(
+    //   body: 'test body',
+    //   title: 'test title',
+    //   id: 'test id',
+    //   courseId: course.id,
+    //   publisher: User(
+    //     id: 'test id',
+    //     name: 'test name',
+    //     email: 'test email',
+    //     password: Password(
+    //       password: 'test password',
+    //       passwordHash: '123',
+    //     ),
+    //   ),
+    // ));
 
     emit(NotesState.loaded(_notes));
   }
@@ -51,7 +51,7 @@ class NotesCubit extends Cubit<NotesState> {
         courseId: course.id,
         title: note.title,
         body: note.body,
-        // userId: testUserId,
+        userId: '1',
       ),
     ));
 
