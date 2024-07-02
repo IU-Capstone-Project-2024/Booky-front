@@ -4,7 +4,16 @@ import 'i_local_storage.dart';
 
 late final SharedPreferences preferences;
 
-abstract class LocalStorage implements ILocalStorage {
+class LocalStorage implements ILocalStorage {
+  factory LocalStorage() {
+    _instance ??= LocalStorage._();
+    return _instance!;
+  }
+
+  LocalStorage._() {
+    _instance = this;
+  }
+
   Future<void> init() async {
     preferences = await SharedPreferences.getInstance();
   }
@@ -23,4 +32,6 @@ abstract class LocalStorage implements ILocalStorage {
   String? get(String key) {
     return preferences.getString(key);
   }
+
+  static LocalStorage? _instance;
 }

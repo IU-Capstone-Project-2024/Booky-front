@@ -3,8 +3,11 @@ import 'package:booky/common/app_styles.dart';
 import 'package:booky/common/utils.dart';
 import 'package:booky/common/widgets/common_app_bar.dart';
 import 'package:booky/common/widgets/common_drawer.dart';
+import 'package:booky/local_storage/local_storage_keys.dart';
 import 'package:booky/proto/generated/booky.pbenum.dart';
 import 'package:flutter/material.dart';
+
+import '../../local_storage/local_storage.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -14,9 +17,18 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  String program = 'BS';
-  int year = 1;
-  Track track = Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE;
+  late String program;
+  late int year;
+  late Track track;
+
+  @override
+  void initState() {
+    super.initState();
+
+    program = LocalStorage().get(LocalStorageKeys.program) ?? 'BS';
+    year = int.parse(LocalStorage().get(LocalStorageKeys.year) ?? '1');
+    track = stringToTrack(LocalStorage().get(LocalStorageKeys.track)) ?? Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +81,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: Text('PhD'),
                         ),
                       ],
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         if (value != null) {
                           setState(() {
                             year = 1;
                             program = value.toString();
                           });
+                          await LocalStorage().update(
+                            key: LocalStorageKeys.program,
+                            value: program,
+                          );
                         }
                       },
                     ),
@@ -98,11 +114,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       style: AppStyles.settingsTitle.copyWith(fontSize: 18),
                       value: year,
                       items: yearValues(),
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         if (value != null) {
                           setState(() {
                             year = value;
                           });
+                          await LocalStorage().update(
+                            key: LocalStorageKeys.year,
+                            value: value.toString(),
+                          );
                         }
                       },
                     ),
@@ -126,12 +146,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       style: AppStyles.settingsTitle.copyWith(fontSize: 18),
                       value: track,
                       items: trackValues(),
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         if (value != null) {
                           setState(() {
                             track = value;
                           });
                         }
+                        await LocalStorage().update(
+                          key: LocalStorageKeys.track,
+                          value: trackToString(track),
+                        );
                       },
                     ),
                   ),

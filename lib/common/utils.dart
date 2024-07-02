@@ -21,3 +21,25 @@ String trackToString(Track track) {
   }
   return '';
 }
+
+Track? stringToTrack(String? track) {
+  switch (track) {
+    case 'AI':
+      return Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE;
+    case 'DS':
+      return Track.TRACK_DATA_SCIENCE;
+    case 'All':
+      return Track.TRACK_CORE;
+    case 'CS':
+      return Track.TRACK_CYBER_SECURITY;
+    case 'GD':
+      return Track.TRACK_GAME_DEVELOPMENT;
+    case 'SD':
+      return Track.TRACK_SOFTWARE_DEVELOPMENT;
+    case 'RO':
+      return Track.TRACK_ROBOTICS;
+    case 'TBA':
+      return Track.TRACK_UNKNOWN;
+  }
+  return null;
+}
