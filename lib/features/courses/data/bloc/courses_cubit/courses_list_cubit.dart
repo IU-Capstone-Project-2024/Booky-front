@@ -29,22 +29,32 @@ class CoursesListCubit extends Cubit<CoursesListState> {
     courses.clear();
     courses.addAll((await stub.listCourses(ListCoursesRequest())).courses);
 
-    final List<Course> coursesToShow = courses.where((Course course) {
-      // if (course.semester != choosenSemester) {
-      //   return false;
-      // }
-      // if (year != course.year) {
-      //   return false;
-      // }
-      // if (searchingTitle.isEmpty) {
-      //   return true;
-      // }
-      // if (course.title.toLowerCase().contains(searchingTitle.toLowerCase())) {
-      //   return true;
-      // }
-      // return false;
-      return true;
-    }).toList();
+    // final List<Course> coursesToShow = courses.where((Course course) {
+    //   // if (course.semester != choosenSemester) {
+    //   //   return false;
+    //   // }
+    //   // if (year != course.year) {
+    //   //   return false;
+    //   // }
+    //   // if (searchingTitle.isEmpty) {
+    //   //   return true;
+    //   // }
+    //   // if (course.title.toLowerCase().contains(searchingTitle.toLowerCase())) {
+    //   //   return true;
+    //   // }
+    //   // return false;
+    //   return true;
+    // }).toList();
+
+    final List<Course> coursesToShow = [];
+
+    if (year != 2024) {
+      coursesToShow.addAll(courses.sublist(6));
+    } else if (choosenSemester != Semester.SEMESTER_SUMMER) {
+      coursesToShow.addAll(courses.sublist(0, 1));
+    } else {
+      coursesToShow.addAll(courses);
+    }
 
     emit(CoursesListState.loaded(coursesToShow));
   }
@@ -54,18 +64,20 @@ class CoursesListCubit extends Cubit<CoursesListState> {
   }
 
   Future<void> addFakeCourse() async {
-    stub.createCourse(CreateCourseRequest(
-      data: CreateCourseData(
-        title: 'Introduction to AI',
-        description: 'Description',
-        tracks: [
-          Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE,
-          Track.TRACK_DATA_SCIENCE,
-        ],
-        semester: Semester.SEMESTER_FALL,
-        year: 2023,
-      ),
-    )).then((_) => fetchCourses());
+    stub
+        .createCourse(CreateCourseRequest(
+          data: CreateCourseData(
+            title: 'Introduction to AI',
+            description: 'Description',
+            tracks: [
+              Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE,
+              Track.TRACK_DATA_SCIENCE,
+            ],
+            semester: Semester.SEMESTER_FALL,
+            year: 2023,
+          ),
+        ))
+        .then((_) => fetchCourses());
   }
 
   Future<void> updateCourse(Course course) async {

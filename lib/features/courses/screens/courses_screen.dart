@@ -186,6 +186,8 @@ class __TitleWidgetState extends State<_TitleWidget> {
         setState(() {
           _semester = value!;
         });
+        getIt.get<CoursesListCubit>().choosenSemester = _semester;
+        getIt.get<CoursesListCubit>().fetchCourses();
       },
     );
   }
@@ -219,6 +221,9 @@ class __YearChooseWidgetState extends State<_YearChooseWidget> {
           IconButton(
             onPressed: () {
               --_year;
+              getIt.get<CoursesListCubit>().year--;
+              getIt.get<CoursesListCubit>().fetchCourses();
+
               setState(() {});
             },
             icon: const Icon(Icons.arrow_back_ios_new),
@@ -231,6 +236,10 @@ class __YearChooseWidgetState extends State<_YearChooseWidget> {
           IconButton(
             onPressed: () {
               ++_year;
+              getIt.get<CoursesListCubit>().year++;
+
+              getIt.get<CoursesListCubit>().fetchCourses();
+
               setState(() {});
             },
             icon: const Icon(Icons.arrow_forward_ios_outlined),

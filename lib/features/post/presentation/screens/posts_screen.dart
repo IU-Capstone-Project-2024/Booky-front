@@ -6,9 +6,12 @@ import 'package:booky/features/courses/data/bloc/notes_cubit/notes_cubit.dart';
 import 'package:booky/features/post/presentation/widgets/note_list_item.dart';
 import 'package:booky/getit.dart';
 import 'package:booky/proto/generated/booky.pb.dart';
+import 'package:booky/proto/generated/booky.pbgrpc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../widgets/file_list_item.dart';
 
 class PostsScreen extends StatelessWidget {
   PostsScreen({
@@ -69,7 +72,7 @@ class PostsScreen extends StatelessWidget {
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     if (index == 0) {
-                      return const FilesList();
+                      return FilesList(course: course);
                     } else {
                       return PostsList(course: course);
                     }
@@ -144,17 +147,18 @@ class __CreateNoteBottomsheetState extends State<_CreateNoteBottomsheet> {
         padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
         child: Stack(
           children: [
-            Positioned(
-              right: 0,
-              bottom: 16,
-              child: CommonFloatingActionButton(
-                icon: const Icon(Icons.done, color: AppColors.white),
-                onPressed: () => widget.saveNote(
-                  _titleController.text,
-                  _bodyController.text,
+            if (widget.note == null)
+              Positioned(
+                right: 0,
+                bottom: 16,
+                child: CommonFloatingActionButton(
+                  icon: const Icon(Icons.done, color: AppColors.white),
+                  onPressed: () => widget.saveNote(
+                    _titleController.text,
+                    _bodyController.text,
+                  ),
                 ),
               ),
-            ),
             Column(
               children: [
                 TextFormField(
@@ -279,11 +283,40 @@ class _NavigationRowState extends State<NavigationRow> {
 }
 
 class FilesList extends StatelessWidget {
-  const FilesList({super.key});
+  const FilesList({super.key, required this.course});
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: CircularProgressIndicator());
+    if (course.title.length < 6) {
+      return const Center(
+          child: Text(
+        'No files yet...',
+        style: AppStyles.title2Medium,
+      ));
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 6.0),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: FileListItem(
+              note: Note(
+                id: '1',
+                title: 'title',
+                body: 'body',
+                publisher: User(
+                  id: '1',
+                  name: 'name',
+                ),
+              ),
+              course: course,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -435,14 +468,9 @@ class _PostsListState extends State<PostsList> {
         ],
       ).then((value) {
         if (value != null) {
-          // Handle menu item selection here
           if (value == 0) {
-            // Complain action
           } else if (value == 1) {
-            // Edit action
-          } else if (value == 2) {
-            // Delete action
-          }
+          } else if (value == 2) {}
         }
       });
 
