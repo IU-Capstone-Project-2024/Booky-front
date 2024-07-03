@@ -27,7 +27,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     program = LocalStorage().get(LocalStorageKeys.program) ?? 'BS';
     year = int.parse(LocalStorage().get(LocalStorageKeys.year) ?? '1');
-    track = stringToTrack(LocalStorage().get(LocalStorageKeys.track)) ?? Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE;
+    track = stringToTrack(LocalStorage().get(LocalStorageKeys.track)) ??
+        Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE;
   }
 
   @override
@@ -113,7 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       iconSize: 40,
                       style: AppStyles.settingsTitle.copyWith(fontSize: 18),
                       value: year,
-                      items: yearValues(),
+                      items: yearValues(program),
                       onChanged: (value) async {
                         if (value != null) {
                           setState(() {
@@ -187,34 +188,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
     return items;
   }
-
-  List<DropdownMenuItem<int>> yearValues() {
-    late final int maxYear;
-
-    switch (program) {
-      case 'BS':
-        maxYear = 4;
-        break;
-      case 'MS':
-        maxYear = 2;
-        break;
-      case 'PhD':
-        maxYear = 1;
-        break;
-      default:
-        maxYear = 4;
-        break;
-    }
-
-    List<DropdownMenuItem<int>> items = [];
-    for (int i = 1; i <= maxYear; i++) {
-      items.add(DropdownMenuItem<int>(
-        value: i,
-        child: Text('$i'),
-      ));
-    }
-    return items;
-  }
 }
 
 class DropDownButtonDecoration extends StatelessWidget {
@@ -243,4 +216,32 @@ class DropDownButtonDecoration extends StatelessWidget {
       ),
     );
   }
+}
+
+List<DropdownMenuItem<int>> yearValues([String? program]) {
+  late final int maxYear;
+
+  switch (program) {
+    case 'BS':
+      maxYear = 4;
+      break;
+    case 'MS':
+      maxYear = 2;
+      break;
+    case 'PhD':
+      maxYear = 1;
+      break;
+    default:
+      maxYear = 4;
+      break;
+  }
+
+  List<DropdownMenuItem<int>> items = [];
+  for (int i = 1; i <= maxYear; i++) {
+    items.add(DropdownMenuItem<int>(
+      value: i,
+      child: Text('$i'),
+    ));
+  }
+  return items;
 }

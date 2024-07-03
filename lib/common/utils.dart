@@ -9,7 +9,7 @@ String trackToString(Track track) {
     case Track.TRACK_DATA_SCIENCE:
       return 'DS';
     case Track.TRACK_CORE:
-      return 'All';
+      return 'Core';
     case Track.TRACK_CYBER_SECURITY:
       return 'CS';
     case Track.TRACK_GAME_DEVELOPMENT:
