@@ -85,18 +85,20 @@ class PostsScreen extends StatelessWidget {
                   controller.jumpToPage(index);
                 },
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 148,
-                child: PageView.builder(
-                  controller: controller,
-                  itemCount: 2,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return FilesList(course: course);
-                    } else {
-                      return PostsList(course: course);
-                    }
-                  },
+              Expanded(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height - 148,
+                  child: PageView.builder(
+                    controller: controller,
+                    itemCount: 2,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return SingleChildScrollView(child: FilesList(course: course));
+                      } else {
+                        return SingleChildScrollView(child: PostsList(course: course));
+                      }
+                    },
+                  ),
                 ),
               ),
             ],

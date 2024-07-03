@@ -107,38 +107,40 @@ class _CoursesScreenState extends State<CoursesScreen> {
               ),
               if (getIt.get<CoursesListCubit>().showSearchingField)
                 _searchingField(),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
-                child: BlocBuilder<CoursesListCubit, CoursesListState>(
-                  builder: (context, state) {
-                    return state.when(
-                      initial: () {
-                        getIt.get<CoursesListCubit>().fetchCourses();
-                        return const Center(
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
+                  child: BlocBuilder<CoursesListCubit, CoursesListState>(
+                    builder: (context, state) {
+                      return state.when(
+                        initial: () {
+                          getIt.get<CoursesListCubit>().fetchCourses();
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                        loading: () => const Center(
                           child: CircularProgressIndicator(),
-                        );
-                      },
-                      loading: () => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      loaded: (courses) {
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: courses
-                                .map((e) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 16.0),
-                                      child: CourseListItem(
-                                        course: e,
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        );
-                      },
-                      error: () => const Text('Error'),
-                    );
-                  },
+                        ),
+                        loaded: (courses) {
+                          return SingleChildScrollView(
+                            child: Column(
+                              children: courses
+                                  .map((e) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 16.0),
+                                        child: CourseListItem(
+                                          course: e,
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          );
+                        },
+                        error: () => const Text('Error'),
+                      );
+                    },
+                  ),
                 ),
               )
             ],
