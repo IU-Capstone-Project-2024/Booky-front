@@ -231,13 +231,14 @@ const UpdateCourseRequest$json = {
   '1': 'UpdateCourseRequest',
   '2': [
     {'1': 'data', '3': 1, '4': 1, '5': 11, '6': '.booky.CreateCourseData', '10': 'data'},
+    {'1': 'id', '3': 2, '4': 1, '5': 9, '10': 'id'},
   ],
 };
 
 /// Descriptor for `UpdateCourseRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List updateCourseRequestDescriptor = $convert.base64Decode(
     'ChNVcGRhdGVDb3Vyc2VSZXF1ZXN0EisKBGRhdGEYASABKAsyFy5ib29reS5DcmVhdGVDb3Vyc2'
-    'VEYXRhUgRkYXRh');
+    'VEYXRhUgRkYXRhEg4KAmlkGAIgASgJUgJpZA==');
 
 @$core.Deprecated('Use updateCourseResponseDescriptor instead')
 const UpdateCourseResponse$json = {
@@ -366,13 +367,14 @@ const UpdateNoteRequest$json = {
   '1': 'UpdateNoteRequest',
   '2': [
     {'1': 'data', '3': 1, '4': 1, '5': 11, '6': '.booky.CreateNoteData', '10': 'data'},
+    {'1': 'id', '3': 2, '4': 1, '5': 9, '10': 'id'},
   ],
 };
 
 /// Descriptor for `UpdateNoteRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List updateNoteRequestDescriptor = $convert.base64Decode(
     'ChFVcGRhdGVOb3RlUmVxdWVzdBIpCgRkYXRhGAEgASgLMhUuYm9va3kuQ3JlYXRlTm90ZURhdG'
-    'FSBGRhdGE=');
+    'FSBGRhdGESDgoCaWQYAiABKAlSAmlk');
 
 @$core.Deprecated('Use updateNoteResponseDescriptor instead')
 const UpdateNoteResponse$json = {

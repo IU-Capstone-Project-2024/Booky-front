@@ -837,10 +837,14 @@ class GetCourseResponse extends $pb.GeneratedMessage {
 class UpdateCourseRequest extends $pb.GeneratedMessage {
   factory UpdateCourseRequest({
     CreateCourseData? data,
+    $core.String? id,
   }) {
     final $result = create();
     if (data != null) {
       $result.data = data;
+    }
+    if (id != null) {
+      $result.id = id;
     }
     return $result;
   }
@@ -850,6 +854,7 @@ class UpdateCourseRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateCourseRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
     ..aOM<CreateCourseData>(1, _omitFieldNames ? '' : 'data', subBuilder: CreateCourseData.create)
+    ..aOS(2, _omitFieldNames ? '' : 'id')
     ..hasRequiredFields = false
   ;
 
@@ -884,6 +889,15 @@ class UpdateCourseRequest extends $pb.GeneratedMessage {
   void clearData() => clearField(1);
   @$pb.TagNumber(1)
   CreateCourseData ensureData() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get id => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set id($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearId() => clearField(2);
 }
 
 class UpdateCourseResponse extends $pb.GeneratedMessage {
@@ -1397,10 +1411,14 @@ class GetNoteResponse extends $pb.GeneratedMessage {
 class UpdateNoteRequest extends $pb.GeneratedMessage {
   factory UpdateNoteRequest({
     CreateNoteData? data,
+    $core.String? id,
   }) {
     final $result = create();
     if (data != null) {
       $result.data = data;
+    }
+    if (id != null) {
+      $result.id = id;
     }
     return $result;
   }
@@ -1410,6 +1428,7 @@ class UpdateNoteRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateNoteRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
     ..aOM<CreateNoteData>(1, _omitFieldNames ? '' : 'data', subBuilder: CreateNoteData.create)
+    ..aOS(2, _omitFieldNames ? '' : 'id')
     ..hasRequiredFields = false
   ;
 
@@ -1444,6 +1463,15 @@ class UpdateNoteRequest extends $pb.GeneratedMessage {
   void clearData() => clearField(1);
   @$pb.TagNumber(1)
   CreateNoteData ensureData() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get id => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set id($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearId() => clearField(2);
 }
 
 class UpdateNoteResponse extends $pb.GeneratedMessage {

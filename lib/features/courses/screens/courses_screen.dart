@@ -1,19 +1,15 @@
 import 'package:booky/common/app_colors.dart/app_colors.dart';
 import 'package:booky/common/app_styles.dart';
-import 'package:booky/common/constants.dart';
+import 'package:booky/common/utils.dart';
 import 'package:booky/common/widgets/common_app_bar.dart';
 import 'package:booky/common/widgets/common_drawer.dart';
 import 'package:booky/common/widgets/common_floating_action_button.dart';
 import 'package:booky/features/courses/screens/create_course_screen.dart';
 import 'package:booky/features/courses/widgets/course_list_item.dart';
-import 'package:booky/features/courses/widgets/search_field.dart';
-import 'package:booky/features/notifications/notifications_screen.dart';
-import 'package:booky/features/settings/settings_screen.dart';
-import 'package:booky/main.dart';
 import 'package:booky/proto/generated/booky.pbenum.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg_icons/flutter_svg_icons.dart';
 
 import '../../../getit.dart';
 import '../data/bloc/courses_cubit/courses_list_cubit.dart';
@@ -28,23 +24,26 @@ class CoursesScreen extends StatefulWidget {
 class _CoursesScreenState extends State<CoursesScreen> {
   late final TextEditingController titleController;
   void titleSubscriber() {
-    getIt.get<CoursesListCubit>().fetchCourses(titleController.text);
+    // search courses with 1.5 sec delay
+    EasyDebounce.debounce(
+      'titleSubscriber',
+      const Duration(milliseconds: 1500),
+      () {
+        getIt.get<CoursesListCubit>().fetchCourses(titleController.text);
+      },
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    titleController = TextEditingController()..addListener(titleListener);
+    titleController = TextEditingController()..addListener(titleSubscriber);
   }
 
   @override
   void dispose() {
     titleController.dispose();
     super.dispose();
-  }
-
-  void titleListener() {
-    getIt.get<CoursesListCubit>().fetchCourses(titleController.text);
   }
 
   @override
@@ -55,11 +54,23 @@ class _CoursesScreenState extends State<CoursesScreen> {
         child: Scaffold(
           backgroundColor: AppColors.mainBackgroundColor,
           drawer: buildDrawer(context),
+          floatingActionButton: CommonFloatingActionButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context)
+                  .pushRoute(context, const CreateCourseScreen());
+            },
+          ),
           appBar: CommonAppBar(
             centerTitle: false,
             titleWidget: Row(
               children: [
-                _TitleWidget(getIt.get<CoursesListCubit>().choosenSemester),
+                _TitleWidget(
+                  getIt.get<CoursesListCubit>().semester,
+                  onChanged: (Semester semester) {
+                    getIt.get<CoursesListCubit>().setSemester(semester);
+                  },
+                ),
               ],
             ),
             leading: Builder(builder: (context) {
@@ -73,11 +84,10 @@ class _CoursesScreenState extends State<CoursesScreen> {
             }),
             trailing: IconButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const NotificationsScreen(),
-                  ),
-                );
+                setState(() {
+                  getIt.get<CoursesListCubit>().showSearchingField =
+                      !getIt.get<CoursesListCubit>().showSearchingField;
+                });
               },
               icon: const Icon(
                 Icons.search,
@@ -89,52 +99,67 @@ class _CoursesScreenState extends State<CoursesScreen> {
           ),
           body: Column(
             children: [
-              _YearChooseWidget(getIt.get<CoursesListCubit>().year),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 128,
-                child: PageView.builder(
-                  itemCount: amountOfYears,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: BlocBuilder<CoursesListCubit, CoursesListState>(
-                        builder: (context, state) {
-                          return state.when(
-                            initial: () {
-                              getIt.get<CoursesListCubit>().fetchCourses();
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                            loading: () => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            loaded: (courses) {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: courses.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 16.0),
-                                    child: CourseListItem(
-                                      course: courses[index],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            error: () => const Text('Error'),
-                          );
-                        },
+              _YearChooseWidget(
+                getIt.get<CoursesListCubit>().year,
+                onChanged: (int year) {
+                  getIt.get<CoursesListCubit>().setYear(year);
+                },
+              ),
+              if (getIt.get<CoursesListCubit>().showSearchingField)
+                _searchingField(),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
+                child: BlocBuilder<CoursesListCubit, CoursesListState>(
+                  builder: (context, state) {
+                    return state.when(
+                      initial: () {
+                        getIt.get<CoursesListCubit>().fetchCourses();
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                      loading: () => const Center(
+                        child: CircularProgressIndicator(),
                       ),
+                      loaded: (courses) {
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: courses
+                                .map((e) => Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 16.0),
+                                      child: CourseListItem(
+                                        course: e,
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        );
+                      },
+                      error: () => const Text('Error'),
                     );
                   },
                 ),
-              ),
+              )
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _searchingField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+      child: TextFormField(
+        controller: titleController,
+        cursorColor: AppColors.titleColor,
+        decoration: const InputDecoration(
+          hoverColor: AppColors.titleColor,
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(color: AppColors.titleColor),
+          ),
+          focusColor: AppColors.titleColor,
         ),
       ),
     );
@@ -142,7 +167,9 @@ class _CoursesScreenState extends State<CoursesScreen> {
 }
 
 class _TitleWidget extends StatefulWidget {
-  const _TitleWidget(this.initial);
+  const _TitleWidget(this.initial, {required this.onChanged});
+
+  final void Function(Semester semester) onChanged;
 
   final Semester initial;
 
@@ -186,7 +213,7 @@ class __TitleWidgetState extends State<_TitleWidget> {
         setState(() {
           _semester = value!;
         });
-        getIt.get<CoursesListCubit>().choosenSemester = _semester;
+        widget.onChanged(_semester);
         getIt.get<CoursesListCubit>().fetchCourses();
       },
     );
@@ -194,9 +221,10 @@ class __TitleWidgetState extends State<_TitleWidget> {
 }
 
 class _YearChooseWidget extends StatefulWidget {
-  const _YearChooseWidget(this.initYear);
+  const _YearChooseWidget(this.initYear, {required this.onChanged});
 
   final int initYear;
+  final void Function(int year) onChanged;
 
   @override
   State<_YearChooseWidget> createState() => __YearChooseWidgetState();
@@ -221,9 +249,7 @@ class __YearChooseWidgetState extends State<_YearChooseWidget> {
           IconButton(
             onPressed: () {
               --_year;
-              getIt.get<CoursesListCubit>().year--;
-              getIt.get<CoursesListCubit>().fetchCourses();
-
+              widget.onChanged(_year);
               setState(() {});
             },
             icon: const Icon(Icons.arrow_back_ios_new),
@@ -236,10 +262,7 @@ class __YearChooseWidgetState extends State<_YearChooseWidget> {
           IconButton(
             onPressed: () {
               ++_year;
-              getIt.get<CoursesListCubit>().year++;
-
-              getIt.get<CoursesListCubit>().fetchCourses();
-
+              widget.onChanged(_year);
               setState(() {});
             },
             icon: const Icon(Icons.arrow_forward_ios_outlined),

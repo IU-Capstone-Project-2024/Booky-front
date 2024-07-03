@@ -29,7 +29,6 @@ class NotesCubit extends Cubit<NotesState> {
 
   void updateNote(Course course, Note note) async {
     emit(const NotesState.loading());
-
     await stub.updateNote(UpdateNoteRequest(
       data: CreateNoteData(
         userId: '1',
@@ -37,8 +36,14 @@ class NotesCubit extends Cubit<NotesState> {
         body: note.body,
         courseId: course.id,
       ),
+      id: note.id,
     ));
+    fetchNotes(course);
+  }
 
+  void deleteNote(Course course, Note note) async {
+    emit(const NotesState.loading());
+    await stub.deleteNote(DeleteNoteRequest(id: note.id));
     fetchNotes(course);
   }
 

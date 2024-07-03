@@ -1,10 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:booky/getit.dart';
 import 'package:booky/proto/client/booky_client.dart';
-import 'package:booky/proto/generated/booky.pb.dart';
 import 'package:booky/proto/generated/booky.pbgrpc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:grpc/service_api.dart';
 import 'package:injectable/injectable.dart';
 
 part 'courses_list_state.dart';
@@ -17,8 +15,9 @@ const String coursesCollection = 'courses';
 class CoursesListCubit extends Cubit<CoursesListState> {
   CoursesListCubit() : super(const CoursesListState.initial());
 
-  Semester choosenSemester = Semester.SEMESTER_SUMMER;
+  Semester semester = Semester.SEMESTER_SUMMER;
   int year = 2024;
+  bool showSearchingField = false;
 
   final BookyTerminalClient client = getIt.get<BookyTerminalClient>();
   BookyServiceClient get stub => client.clientStub;
@@ -29,38 +28,47 @@ class CoursesListCubit extends Cubit<CoursesListState> {
     courses.clear();
     courses.addAll((await stub.listCourses(ListCoursesRequest())).courses);
 
-    // final List<Course> coursesToShow = courses.where((Course course) {
-    //   // if (course.semester != choosenSemester) {
-    //   //   return false;
-    //   // }
-    //   // if (year != course.year) {
-    //   //   return false;
-    //   // }
-    //   // if (searchingTitle.isEmpty) {
-    //   //   return true;
-    //   // }
-    //   // if (course.title.toLowerCase().contains(searchingTitle.toLowerCase())) {
-    //   //   return true;
-    //   // }
-    //   // return false;
-    //   return true;
-    // }).toList();
-
-    final List<Course> coursesToShow = [];
-
-    if (year != 2024) {
-      coursesToShow.addAll(courses.sublist(6));
-    } else if (choosenSemester != Semester.SEMESTER_SUMMER) {
-      coursesToShow.addAll(courses.sublist(0, 1));
-    } else {
-      coursesToShow.addAll(courses);
-    }
+    final List<Course> coursesToShow = courses.where((Course course) {
+      if (course.semester != semester) {
+        return false;
+      }
+      if (year != course.year) {
+        return false;
+      }
+      if (searchingTitle.isEmpty) {
+        return true;
+      }
+      if (course.title.toLowerCase().contains(searchingTitle.toLowerCase())) {
+        return true;
+      }
+      return true;
+    }).toList();
 
     emit(CoursesListState.loaded(coursesToShow));
   }
 
-  Future<void> addCourse(Course course) async {
-    emit(CoursesListState.loaded(courses));
+  void setSemester(Semester semester) {
+    semester = semester;
+    fetchCourses();
+  }
+
+  void setYear(int year) {
+    this.year = year;
+    fetchCourses();
+  }
+
+
+  Future<void> createCourse(Course courseData) async {
+    stub
+        .createCourse(CreateCourseRequest(
+            data: CreateCourseData(
+          title: courseData.title,
+          description: courseData.description,
+          tracks: courseData.tracks,
+          semester: courseData.semester,
+          year: courseData.year,
+        )))
+        .then((_) => fetchCourses());
   }
 
   Future<void> addFakeCourse() async {
@@ -81,7 +89,28 @@ class CoursesListCubit extends Cubit<CoursesListState> {
   }
 
   Future<void> updateCourse(Course course) async {
-    emit(CoursesListState.loaded(courses));
+    stub
+        .updateCourse(
+          UpdateCourseRequest(
+            data: CreateCourseData(
+              title: course.title,
+              description: course.description,
+              tracks: course.tracks,
+              semester: course.semester,
+              year: course.year,
+            ),
+            id: course.id,
+          ),
+        )
+        .then((_) => fetchCourses());
+  }
+
+  Future<void> deleteCourse(Course course) async {
+    stub
+        .deleteCourse(
+          DeleteCourseRequest(id: course.id),
+        )
+        .then((_) => fetchCourses());
   }
 
   final List<Course> courses = [];

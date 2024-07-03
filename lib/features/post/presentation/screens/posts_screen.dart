@@ -1,14 +1,16 @@
 import 'package:booky/common/app_colors.dart/app_colors.dart';
 import 'package:booky/common/app_styles.dart';
+import 'package:booky/common/utils.dart';
 import 'package:booky/common/widgets/common_app_bar.dart';
 import 'package:booky/common/widgets/common_floating_action_button.dart';
+import 'package:booky/common/widgets/confirm_diealog.dart';
 import 'package:booky/features/courses/data/bloc/notes_cubit/notes_cubit.dart';
+import 'package:booky/features/courses/screens/create_course_screen.dart';
 import 'package:booky/features/post/presentation/widgets/note_list_item.dart';
 import 'package:booky/getit.dart';
 import 'package:booky/proto/generated/booky.pb.dart';
 import 'package:booky/proto/generated/booky.pbgrpc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../widgets/file_list_item.dart';
@@ -28,7 +30,7 @@ class PostsScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.mainBackgroundColor,
         floatingActionButton: CommonFloatingActionButton(
-          onPressed: () => _openBottomsheet(context),
+          onPressed: () => _openBottomsheet(context, mode: ViewMode.create),
           icon: const Icon(
             Icons.add,
             color: AppColors.white,
@@ -46,12 +48,30 @@ class PostsScreen extends StatelessWidget {
             ),
           ),
           title: course.title,
-          trailing: IconButton(
-            icon: const Icon(
-              Icons.more_vert_rounded,
-              color: AppColors.titleColor,
+          trailing: Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: DropdownButton(
+              underline: const SizedBox(),
+              onChanged: (value) {
+                if (value == 'edit') {
+                  Navigator.of(context).pushRoute(
+                    context,
+                    CreateCourseScreen(course: course),
+                  );
+                }
+              },
+              icon: const Icon(
+                Icons.more_vert,
+                size: 36,
+                color: AppColors.titleColor,
+              ),
+              items: const [
+                DropdownMenuItem(
+                  value: 'edit',
+                  child: Text('Edit'),
+                ),
+              ],
             ),
-            onPressed: () {},
           ),
         ),
         body: Padding(
@@ -86,7 +106,7 @@ class PostsScreen extends StatelessWidget {
     );
   }
 
-  void _openBottomsheet(BuildContext context) {
+  void _openBottomsheet(BuildContext context, {required ViewMode mode}) {
     showModalBottomSheet(
       scrollControlDisabledMaxHeightRatio: 0.7,
       context: context,
@@ -110,6 +130,7 @@ class PostsScreen extends StatelessWidget {
                 );
             Navigator.of(context).pop();
           },
+          mode: mode,
         );
       },
     );
@@ -117,10 +138,18 @@ class PostsScreen extends StatelessWidget {
 }
 
 class _CreateNoteBottomsheet extends StatefulWidget {
-  const _CreateNoteBottomsheet(this.saveNote, [this.note]);
+  const _CreateNoteBottomsheet(
+    this.saveNote, {
+    this.note,
+    required this.mode,
+    this.course,
+  });
 
   final Note? note;
   final void Function(String title, String body) saveNote;
+  final Course? course;
+
+  final ViewMode mode;
 
   @override
   State<_CreateNoteBottomsheet> createState() => __CreateNoteBottomsheetState();
@@ -147,16 +176,27 @@ class __CreateNoteBottomsheetState extends State<_CreateNoteBottomsheet> {
         padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
         child: Stack(
           children: [
-            if (widget.note == null)
+            if (widget.mode != ViewMode.read)
               Positioned(
                 right: 0,
                 bottom: 16,
                 child: CommonFloatingActionButton(
                   icon: const Icon(Icons.done, color: AppColors.white),
-                  onPressed: () => widget.saveNote(
-                    _titleController.text,
-                    _bodyController.text,
-                  ),
+                  onPressed: () {
+                    if (widget.mode == ViewMode.edit) {
+                      widget.note!.title = _titleController.text;
+                      widget.note!.body = _bodyController.text;
+                      getIt
+                          .get<NotesCubit>()
+                          .updateNote(widget.course!, widget.note!);
+                    } else {
+                      widget.saveNote(
+                        _titleController.text,
+                        _bodyController.text,
+                      );
+                    }
+                    Navigator.of(context).pop();
+                  },
                 ),
               ),
             Column(
@@ -377,10 +417,12 @@ class _PostsListState extends State<PostsList> {
                               MediaQuery.of(context).size.height -
                                   _tapPosition.dy,
                             ),
+                            notes[index],
+                            widget.course,
                           );
                         },
                         onTap: () {
-                          _openBottomsheet(context, notes[index]);
+                          _openEditNoteBottomsheet(context, notes[index], ViewMode.read);
                         },
                         title: NoteListItem(
                           course: widget.course,
@@ -400,7 +442,8 @@ class _PostsListState extends State<PostsList> {
     );
   }
 
-  void _showMenu(BuildContext context, RelativeRect position) => showMenu(
+  void _showMenu(BuildContext context, RelativeRect position, Note note, Course course) =>
+      showMenu(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -445,9 +488,17 @@ class _PostsListState extends State<PostsList> {
                 ),
               ],
             ),
+            onTap: () {
+              _openEditNoteBottomsheet(context, note, ViewMode.edit, widget.course);
+            },
           ),
           PopupMenuItem<int>(
             value: 2,
+            onTap: () async {
+              if (await showConfirmDialog(context, text: 'Are you sure you want to delete this note?')) {
+                getIt.get<NotesCubit>().deleteNote(widget.course, note);
+              }
+            },
             child: Row(
               children: [
                 const Icon(
@@ -462,6 +513,7 @@ class _PostsListState extends State<PostsList> {
                     color: AppColors.darkTitleColor,
                   ),
                 ),
+            
               ],
             ),
           ),
@@ -474,7 +526,7 @@ class _PostsListState extends State<PostsList> {
         }
       });
 
-  void _openBottomsheet(BuildContext context, Note note) {
+  void _openEditNoteBottomsheet(BuildContext context, Note note, ViewMode mode, [Course? course]) {
     showModalBottomSheet(
       scrollControlDisabledMaxHeightRatio: 0.9,
       context: context,
@@ -498,11 +550,18 @@ class _PostsListState extends State<PostsList> {
                     Note(body: body, title: title),
                   );
             }
-            Navigator.of(context).pop();
           },
-          note,
+          mode: mode,
+          note: note,
+          course: course,
         );
       },
     );
   }
+}
+
+enum ViewMode {
+  edit,
+  create,
+  read;
 }

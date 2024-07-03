@@ -1,4 +1,6 @@
+import 'package:booky/common/constants/constants.dart';
 import 'package:booky/proto/generated/booky.pbenum.dart';
+import 'package:flutter/material.dart';
 
 String trackToString(Track track) {
   switch (track) {
@@ -42,4 +44,20 @@ Track? stringToTrack(String? track) {
       return Track.TRACK_UNKNOWN;
   }
   return null;
+}
+
+extension NavigatorX on NavigatorState {
+  pushRoute(BuildContext context, Widget route) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => route,
+        transitionDuration:
+            const Duration(milliseconds: routerTransitionDuration),
+        reverseTransitionDuration:
+            const Duration(milliseconds: routerTransitionDuration),
+        transitionsBuilder: (_, a, __, c) =>
+            FadeTransition(opacity: a, child: c),
+      ),
+    );
+  }
 }
