@@ -11,7 +11,8 @@ class BookyTerminalClient {
   BookyTerminalClient() {
     _channel = ClientChannel(
       // 'localhost',
-      '95.174.94.190',
+      // '95.174.94.190',
+      '10.0.2.2',
       port: 4000,
       options: const ChannelOptions(
         credentials: ChannelCredentials.insecure(),

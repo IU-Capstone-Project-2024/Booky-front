@@ -92,4 +92,10 @@ class BookyService extends BookyServiceBase {
     // TODO: implement listFiles
     throw UnimplementedError();
   }
+  
+  @override
+  Future<GetImprovedNoteResponse> getImprovedNote(ServiceCall call, GetImprovedNoteRequest request) {
+    // TODO: implement getImprovedNote
+    throw UnimplementedError();
+  }
 }

@@ -13,8 +13,9 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import 'features/courses/data/bloc/courses_cubit/courses_list_cubit.dart'
     as _i3;
-import 'features/courses/data/bloc/notes_cubit/notes_cubit.dart' as _i5;
-import 'proto/client/booky_client.dart' as _i4;
+import 'features/courses/data/bloc/notes_cubit/notes_cubit.dart' as _i4;
+import 'features/post/data/cubit/files_cubit.dart' as _i5;
+import 'proto/client/booky_client.dart' as _i6;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -28,8 +29,9 @@ extension GetItInjectableX on _i1.GetIt {
       environmentFilter,
     );
     gh.lazySingleton<_i3.CoursesListCubit>(() => _i3.CoursesListCubit());
-    gh.lazySingleton<_i4.BookyTerminalClient>(() => _i4.BookyTerminalClient());
-    gh.lazySingleton<_i5.NotesCubit>(() => _i5.NotesCubit());
+    gh.lazySingleton<_i4.NotesCubit>(() => _i4.NotesCubit());
+    gh.lazySingleton<_i5.FilesCubit>(() => _i5.FilesCubit());
+    gh.lazySingleton<_i6.BookyTerminalClient>(() => _i6.BookyTerminalClient());
     return this;
   }
 }

@@ -57,8 +57,8 @@ class CoursesListCubit extends Cubit<CoursesListState> {
     fetchCourses();
   }
 
-
   Future<void> createCourse(Course courseData) async {
+
     stub
         .createCourse(CreateCourseRequest(
             data: CreateCourseData(

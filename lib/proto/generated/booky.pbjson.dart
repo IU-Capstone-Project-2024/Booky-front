@@ -433,6 +433,32 @@ const ListNotesResponse$json = {
 final $typed_data.Uint8List listNotesResponseDescriptor = $convert.base64Decode(
     'ChFMaXN0Tm90ZXNSZXNwb25zZRIhCgVub3RlcxgBIAMoCzILLmJvb2t5Lk5vdGVSBW5vdGVz');
 
+@$core.Deprecated('Use getImprovedNoteRequestDescriptor instead')
+const GetImprovedNoteRequest$json = {
+  '1': 'GetImprovedNoteRequest',
+  '2': [
+    {'1': 'body', '3': 1, '4': 1, '5': 9, '10': 'body'},
+  ],
+};
+
+/// Descriptor for `GetImprovedNoteRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getImprovedNoteRequestDescriptor = $convert.base64Decode(
+    'ChZHZXRJbXByb3ZlZE5vdGVSZXF1ZXN0EhIKBGJvZHkYASABKAlSBGJvZHk=');
+
+@$core.Deprecated('Use getImprovedNoteResponseDescriptor instead')
+const GetImprovedNoteResponse$json = {
+  '1': 'GetImprovedNoteResponse',
+  '2': [
+    {'1': 'body', '3': 1, '4': 1, '5': 9, '10': 'body'},
+    {'1': 'improved_body', '3': 2, '4': 1, '5': 9, '10': 'improvedBody'},
+  ],
+};
+
+/// Descriptor for `GetImprovedNoteResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getImprovedNoteResponseDescriptor = $convert.base64Decode(
+    'ChdHZXRJbXByb3ZlZE5vdGVSZXNwb25zZRISCgRib2R5GAEgASgJUgRib2R5EiMKDWltcHJvdm'
+    'VkX2JvZHkYAiABKAlSDGltcHJvdmVkQm9keQ==');
+
 @$core.Deprecated('Use fileDescriptor instead')
 const File$json = {
   '1': 'File',

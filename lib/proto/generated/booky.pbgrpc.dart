@@ -65,6 +65,10 @@ class BookyServiceClient extends $grpc.Client {
       '/booky.BookyService/ListNotes',
       ($0.ListNotesRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.ListNotesResponse.fromBuffer(value));
+  static final _$getImprovedNote = $grpc.ClientMethod<$0.GetImprovedNoteRequest, $0.GetImprovedNoteResponse>(
+      '/booky.BookyService/GetImprovedNote',
+      ($0.GetImprovedNoteRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.GetImprovedNoteResponse.fromBuffer(value));
   static final _$createFile = $grpc.ClientMethod<$0.CreateFileRequest, $0.CreateFileResponse>(
       '/booky.BookyService/CreateFile',
       ($0.CreateFileRequest value) => value.writeToBuffer(),
@@ -130,6 +134,10 @@ class BookyServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$0.ListNotesResponse> listNotes($0.ListNotesRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$listNotes, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.GetImprovedNoteResponse> getImprovedNote($0.GetImprovedNoteRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getImprovedNote, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.CreateFileResponse> createFile($0.CreateFileRequest request, {$grpc.CallOptions? options}) {
@@ -231,6 +239,13 @@ abstract class BookyServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.ListNotesRequest.fromBuffer(value),
         ($0.ListNotesResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetImprovedNoteRequest, $0.GetImprovedNoteResponse>(
+        'GetImprovedNote',
+        getImprovedNote_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.GetImprovedNoteRequest.fromBuffer(value),
+        ($0.GetImprovedNoteResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.CreateFileRequest, $0.CreateFileResponse>(
         'CreateFile',
         createFile_Pre,
@@ -305,6 +320,10 @@ abstract class BookyServiceBase extends $grpc.Service {
     return listNotes(call, await request);
   }
 
+  $async.Future<$0.GetImprovedNoteResponse> getImprovedNote_Pre($grpc.ServiceCall call, $async.Future<$0.GetImprovedNoteRequest> request) async {
+    return getImprovedNote(call, await request);
+  }
+
   $async.Future<$0.CreateFileResponse> createFile_Pre($grpc.ServiceCall call, $async.Future<$0.CreateFileRequest> request) async {
     return createFile(call, await request);
   }
@@ -332,6 +351,7 @@ abstract class BookyServiceBase extends $grpc.Service {
   $async.Future<$0.UpdateNoteResponse> updateNote($grpc.ServiceCall call, $0.UpdateNoteRequest request);
   $async.Future<$0.DeleteNoteResponse> deleteNote($grpc.ServiceCall call, $0.DeleteNoteRequest request);
   $async.Future<$0.ListNotesResponse> listNotes($grpc.ServiceCall call, $0.ListNotesRequest request);
+  $async.Future<$0.GetImprovedNoteResponse> getImprovedNote($grpc.ServiceCall call, $0.GetImprovedNoteRequest request);
   $async.Future<$0.CreateFileResponse> createFile($grpc.ServiceCall call, $0.CreateFileRequest request);
   $async.Future<$0.GetFileResponse> getFile($grpc.ServiceCall call, $0.GetFileRequest request);
   $async.Future<$0.DeleteFileResponse> deleteFile($grpc.ServiceCall call, $0.DeleteFileRequest request);

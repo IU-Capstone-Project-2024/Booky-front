@@ -1,6 +1,7 @@
 import 'package:booky/common/constants/constants.dart';
-import 'package:booky/proto/generated/booky.pbenum.dart';
 import 'package:flutter/material.dart';
+import 'package:booky/features/post/domain/entities/file_entity.dart';
+import 'package:booky/proto/generated/booky.pb.dart';
 
 String trackToString(Track track) {
   switch (track) {
@@ -59,5 +60,20 @@ extension NavigatorX on NavigatorState {
             FadeTransition(opacity: a, child: c),
       ),
     );
+  }
+}
+
+
+FileType getFileType(File file) {
+  if (file.filename.endsWith('.pdf')) {
+    return FileType.pdf;
+  } else if (file.filename.endsWith('.md')) {
+    return FileType.md;
+  } else if (file.filename.endsWith('.jpg') || file.filename.endsWith('.png')) {
+    return FileType.image;
+  } else if (file.filename.endsWith('.mp4')) {
+    return FileType.video;
+  } else {
+    return FileType.notStated;
   }
 }

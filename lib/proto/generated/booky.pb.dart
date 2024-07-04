@@ -1702,6 +1702,120 @@ class ListNotesResponse extends $pb.GeneratedMessage {
   $core.List<Note> get notes => $_getList(0);
 }
 
+class GetImprovedNoteRequest extends $pb.GeneratedMessage {
+  factory GetImprovedNoteRequest({
+    $core.String? body,
+  }) {
+    final $result = create();
+    if (body != null) {
+      $result.body = body;
+    }
+    return $result;
+  }
+  GetImprovedNoteRequest._() : super();
+  factory GetImprovedNoteRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetImprovedNoteRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetImprovedNoteRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'body')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetImprovedNoteRequest clone() => GetImprovedNoteRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetImprovedNoteRequest copyWith(void Function(GetImprovedNoteRequest) updates) => super.copyWith((message) => updates(message as GetImprovedNoteRequest)) as GetImprovedNoteRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetImprovedNoteRequest create() => GetImprovedNoteRequest._();
+  GetImprovedNoteRequest createEmptyInstance() => create();
+  static $pb.PbList<GetImprovedNoteRequest> createRepeated() => $pb.PbList<GetImprovedNoteRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetImprovedNoteRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetImprovedNoteRequest>(create);
+  static GetImprovedNoteRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get body => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set body($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasBody() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBody() => clearField(1);
+}
+
+class GetImprovedNoteResponse extends $pb.GeneratedMessage {
+  factory GetImprovedNoteResponse({
+    $core.String? body,
+    $core.String? improvedBody,
+  }) {
+    final $result = create();
+    if (body != null) {
+      $result.body = body;
+    }
+    if (improvedBody != null) {
+      $result.improvedBody = improvedBody;
+    }
+    return $result;
+  }
+  GetImprovedNoteResponse._() : super();
+  factory GetImprovedNoteResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetImprovedNoteResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetImprovedNoteResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'booky'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'body')
+    ..aOS(2, _omitFieldNames ? '' : 'improvedBody')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetImprovedNoteResponse clone() => GetImprovedNoteResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetImprovedNoteResponse copyWith(void Function(GetImprovedNoteResponse) updates) => super.copyWith((message) => updates(message as GetImprovedNoteResponse)) as GetImprovedNoteResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetImprovedNoteResponse create() => GetImprovedNoteResponse._();
+  GetImprovedNoteResponse createEmptyInstance() => create();
+  static $pb.PbList<GetImprovedNoteResponse> createRepeated() => $pb.PbList<GetImprovedNoteResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetImprovedNoteResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetImprovedNoteResponse>(create);
+  static GetImprovedNoteResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get body => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set body($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasBody() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBody() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get improvedBody => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set improvedBody($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasImprovedBody() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearImprovedBody() => clearField(2);
+}
+
 class File extends $pb.GeneratedMessage {
   factory File({
     $core.String? id,
