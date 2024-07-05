@@ -95,11 +95,9 @@ class PostsScreen extends StatelessWidget {
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     if (index == 0) {
-                      return SingleChildScrollView(
-                          child: FilesList(course: course));
+                      return FilesList(course: course);
                     } else {
-                      return SingleChildScrollView(
-                          child: PostsList(course: course));
+                      return PostsList(course: course);
                     }
                   },
                 ),
@@ -189,19 +187,38 @@ class _CreateNoteBottomsheetState extends State<CreateNoteBottomsheet> {
                 child: CommonFloatingActionButton(
                   icon: const Icon(Icons.done, color: AppColors.white),
                   onPressed: () {
+                    if (_titleController.text.isEmpty ||
+                        _bodyController.text.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Error'),
+                            content: const Text('All fields are required'),
+                            actions: [
+                              TextButton(
+                                onPressed: Navigator.of(context).pop,
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      return;
+                    }
                     if (widget.mode == ViewMode.edit) {
                       widget.note!.title = _titleController.text;
                       widget.note!.body = _bodyController.text;
                       getIt
                           .get<NotesCubit>()
                           .updateNote(widget.course!, widget.note!);
+                      Navigator.of(context).pop();
                     } else {
                       widget.saveNote(
                         _titleController.text,
                         _bodyController.text,
                       );
                     }
-                    // Navigator.of(context).pop();
                   },
                 ),
               ),

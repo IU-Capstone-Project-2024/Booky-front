@@ -42,7 +42,7 @@ class CoursesListCubit extends Cubit<CoursesListState> {
         if (course.title.toLowerCase().contains(searchingTitle.toLowerCase())) {
           return true;
         }
-        return true;
+        return false;
       }).toList();
       emit(CoursesListState.loaded(coursesToShow));
     });

@@ -49,46 +49,43 @@ class _PostsListState extends State<PostsList> {
                 ),
               );
             }
-            return Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: notes.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
-                      child: GestureDetector(
-                        onTapDown: _storePosition,
-                        child: ListTile(
-                          onLongPress: () {
-                            _showMenu(
-                              context,
-                              RelativeRect.fromLTRB(
-                                _tapPosition.dx,
-                                _tapPosition.dy,
-                                MediaQuery.of(context).size.width -
+            return Padding(
+              padding: const EdgeInsets.only(top: 16.0, left: 2.0, right: 2.0,),
+              child: ListView(
+                shrinkWrap: true,
+                children: notes
+                    .map((Note e) => Padding(
+                          padding: const EdgeInsets.only(bottom: 4.0),
+                          child: GestureDetector(
+                            onTapDown: _storePosition,
+                            child: ListTile(
+                              onLongPress: () {
+                                _showMenu(
+                                  context,
+                                  RelativeRect.fromLTRB(
                                     _tapPosition.dx,
-                                MediaQuery.of(context).size.height -
                                     _tapPosition.dy,
+                                    MediaQuery.of(context).size.width -
+                                        _tapPosition.dx,
+                                    MediaQuery.of(context).size.height -
+                                        _tapPosition.dy,
+                                  ),
+                                  e,
+                                  widget.course,
+                                );
+                              },
+                              onTap: () {
+                                _openEditNoteBottomsheet(
+                                    context, e, ViewMode.read);
+                              },
+                              title: NoteListItem(
+                                course: widget.course,
+                                note: e,
                               ),
-                              notes[index],
-                              widget.course,
-                            );
-                          },
-                          onTap: () {
-                            _openEditNoteBottomsheet(
-                                context, notes[index], ViewMode.read);
-                          },
-                          title: NoteListItem(
-                            course: widget.course,
-                            note: notes[index],
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                        ))
+                    .toList(),
               ),
             );
           },

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ImageViewer extends StatelessWidget {
   const ImageViewer({super.key, required this.fileBytes});
@@ -11,6 +12,12 @@ class ImageViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     Uint8List imageBytes = Uint8List.fromList(fileBytes);
 
-    return Image.memory(imageBytes);
+    return Expanded(
+      child: PhotoView(
+        imageProvider: MemoryImage(
+          imageBytes,
+        ),
+      ),
+    );
   }
 }

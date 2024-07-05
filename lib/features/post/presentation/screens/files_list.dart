@@ -16,58 +16,48 @@ class FilesList extends StatelessWidget {
     getIt.get<FilesCubit>().course = course;
     return Padding(
       padding: const EdgeInsets.only(top: 6.0),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: BlocProvider.value(
-              value: getIt.get<FilesCubit>(),
-              child: BlocBuilder<FilesCubit, FilesState>(
-                bloc: getIt.get<FilesCubit>()..fetchFiles(),
-                builder: (context, state) {
-                  return state.when(
-                    initial: () {
-                      getIt.get<FilesCubit>().fetchFiles();
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: BlocProvider.value(
+          value: getIt.get<FilesCubit>(),
+          child: BlocBuilder<FilesCubit, FilesState>(
+            bloc: getIt.get<FilesCubit>()..fetchFiles(),
+            builder: (context, state) {
+              return state.when(
+                initial: () {
+                  getIt.get<FilesCubit>().fetchFiles();
 
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                    error: () => const Center(
-                      child: Text('Error'),
-                    ),
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
-                    loaded: (List<File> files) {
-                      if (files.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            'No files yet...',
-                            style: AppStyles.title2Medium,
-                          ),
-                        );
-                      }
-                      return Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: files
-                                .map((e) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 16.0),
-                                      child:
-                                          FileListItem(course: course, file: e),
-                                    ))
-                                .toList(),
-                          ),
-                        ),
-                      );
-                    },
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
                 },
-              ),
-            ),
+                error: () => const Center(
+                  child: Text('Error'),
+                ),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                loaded: (List<File> files) {
+                  if (files.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No files yet...',
+                        style: AppStyles.title2Medium,
+                      ),
+                    );
+                  }
+                  return ListView(
+                    shrinkWrap: true,
+                    children: files
+                        .map((e) => Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: FileListItem(course: course, file: e),
+                            ))
+                        .toList(),
+                  );
+                },
+              );
+            },
           ),
-        ],
+        ),
       ),
     );
   }

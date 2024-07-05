@@ -27,7 +27,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
     // search courses with 1.5 sec delay
     EasyDebounce.debounce(
       'titleSubscriber',
-      const Duration(milliseconds: 1500),
+      const Duration(milliseconds: 1000),
       () {
         getIt.get<CoursesListCubit>().fetchCourses(titleController.text);
       },
@@ -87,6 +87,9 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 setState(() {
                   getIt.get<CoursesListCubit>().showSearchingField =
                       !getIt.get<CoursesListCubit>().showSearchingField;
+                  if (!getIt.get<CoursesListCubit>().showSearchingField) {
+                    titleController.clear();
+                  }
                 });
               },
               icon: const Icon(

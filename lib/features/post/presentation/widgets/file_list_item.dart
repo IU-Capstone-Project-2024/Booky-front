@@ -53,7 +53,7 @@ class FileListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      file.filename,
+                      extractFileName(file.filename),
                       style: AppStyles.title1,
                     ),
                     const SizedBox(height: 8),
@@ -75,4 +75,9 @@ class FileListItem extends StatelessWidget {
       ),
     );
   }
+}
+
+String extractFileName(String fileName) {
+  int indexOfLastDot = fileName.lastIndexOf('.');
+  return fileName.substring(0, indexOfLastDot);
 }
