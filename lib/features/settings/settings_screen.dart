@@ -3,6 +3,8 @@ import 'package:booky/common/app_styles.dart';
 import 'package:booky/common/utils.dart';
 import 'package:booky/common/widgets/common_app_bar.dart';
 import 'package:booky/common/widgets/common_drawer.dart';
+import 'package:booky/features/courses/data/bloc/courses_cubit/courses_list_cubit.dart';
+import 'package:booky/getit.dart';
 import 'package:booky/local_storage/local_storage_keys.dart';
 import 'package:booky/proto/generated/booky.pbenum.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +94,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             key: LocalStorageKeys.program,
                             value: program,
                           );
+                          await LocalStorage().update(
+                            key: LocalStorageKeys.year,
+                            value: '1',
+                          );
                         }
                       },
                     ),
@@ -157,6 +163,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           key: LocalStorageKeys.track,
                           value: trackToString(track),
                         );
+                        getIt.get<CoursesListCubit>().fetchCourses();
                       },
                     ),
                   ),
@@ -172,7 +179,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   List<DropdownMenuItem<Track>> trackValues() {
     final List<Track> tracs = [
       Track.TRACK_APPLIED_ARTIFICIAL_INTELLIGENCE,
-      Track.TRACK_DATA_SCIENCE,
       Track.TRACK_SOFTWARE_DEVELOPMENT,
       Track.TRACK_GAME_DEVELOPMENT,
       Track.TRACK_ROBOTICS,
@@ -222,9 +228,6 @@ List<DropdownMenuItem<int>> yearValues([String? program]) {
   late final int maxYear;
 
   switch (program) {
-    case 'BS':
-      maxYear = 4;
-      break;
     case 'MS':
       maxYear = 2;
       break;

@@ -1,5 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:booky/common/utils.dart';
 import 'package:booky/getit.dart';
+import 'package:booky/local_storage/local_storage.dart';
+import 'package:booky/local_storage/local_storage_keys.dart';
 import 'package:booky/proto/client/booky_client.dart';
 import 'package:booky/proto/generated/booky.pbgrpc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -25,6 +28,9 @@ class CoursesListCubit extends Cubit<CoursesListState> {
   Future<void> fetchCourses([String searchingTitle = '']) async {
     emit(const CoursesListState.loading());
 
+    Track userTrack = stringToTrack(LocalStorage().get(LocalStorageKeys.track)) ??
+        Track.TRACK_CORE;
+
     stub.listCourses(ListCoursesRequest()).then((ListCoursesResponse response) {
       courses.clear();
       courses.addAll(response.courses);
@@ -34,6 +40,9 @@ class CoursesListCubit extends Cubit<CoursesListState> {
           return false;
         }
         if (year != course.year) {
+          return false;
+        }
+        if (!course.tracks.contains(userTrack) && !course.tracks.contains(Track.TRACK_CORE)) {
           return false;
         }
         if (searchingTitle.isEmpty) {
