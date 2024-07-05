@@ -59,7 +59,10 @@ class _UpdateMdScreenState extends State<UpdateMdScreen>
         floatingActionButton: widget.mode == ViewMode.read
             ? null
             : CommonFloatingActionButton(
-                icon: const Icon(Icons.save),
+                icon: const Icon(
+                  Icons.save,
+                  color: AppColors.white,
+                ),
                 onPressed: () async {
                   if (await showConfirmDialog(context,
                       text: 'Have you finished editing?')) {
@@ -137,7 +140,8 @@ class _UpdateMdScreenState extends State<UpdateMdScreen>
                 valueListenable: _mdTextNotifier,
                 builder: (context, mdText, _) => MarkdownBody(
                   data: mdText,
-                  styleSheet: MarkdownStyleSheet(textScaler: const TextScaler.linear(1.3)),
+                  styleSheet: MarkdownStyleSheet(
+                      textScaler: const TextScaler.linear(1.3)),
                 ),
               ),
             ),

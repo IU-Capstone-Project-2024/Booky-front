@@ -1,52 +1,59 @@
 import 'package:booky/common/app_colors.dart/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppStyles {
-  static const TextStyle toolbarStyle = TextStyle(
+  static final TextStyle toolbarStyle = GoogleFonts.montserratAlternates(
     fontSize: 24,
     fontWeight: FontWeight.w500,
     color: AppColors.titleColor,
   );
 
-  static const TextStyle title1 = TextStyle(
+  static final TextStyle title1 = GoogleFonts.montserratAlternates(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     color: AppColors.darkTitleColor,
   );
 
-  static const TextStyle description = TextStyle(
+  static final TextStyle description = GoogleFonts.capriola(
     fontSize: 12,
     fontWeight: FontWeight.w400,
     color: AppColors.descriptionColor,
   );
 
-  static const TextStyle title2Medium = TextStyle(
+  static final TextStyle title2Medium = GoogleFonts.montserratAlternates(
     fontSize: 24,
     fontWeight: FontWeight.normal,
     color: AppColors.titleColor,
   );
 
-  static const TextStyle title2MediumInactive = TextStyle(
+  static final TextStyle title2MediumInactive = GoogleFonts.montserratAlternates(
     fontSize: 24,
     fontWeight: FontWeight.bold,
     color: AppColors.inactiveTitleColor,
   );
 
-  static const TextStyle greyTitle = TextStyle(
+  static final TextStyle greyTitle = GoogleFonts.capriola(
     fontSize: 24,
     color: AppColors.editableText,
     fontWeight: FontWeight.w400,
   );
 
-  static const TextStyle greyDescription = TextStyle(
+  static final TextStyle greyDescription = GoogleFonts.capriola(
     fontSize: 16,
     color: AppColors.editableText,
     fontWeight: FontWeight.w300,
   );
 
-  static const TextStyle settingsTitle = TextStyle(
-    fontSize: 22,
+  static final TextStyle settingsTitle = GoogleFonts.capriola(
+    fontSize: 18,
     color: AppColors.black,
     fontWeight: FontWeight.w500,
+  );
+
+  static final TextStyle content = GoogleFonts.montserrat(
+    fontSize: 16,
+    color: AppColors.black,
+    fontWeight: FontWeight.w400,
   );
 }

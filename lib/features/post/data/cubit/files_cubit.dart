@@ -32,7 +32,7 @@ class FilesCubit extends Cubit<FilesState> {
     });
   }
 
-  Future<File?> uploadImage() async {
+  Future<File?> uploadImage(String title) async {
     final CreateFileData? createFileData = await pickImageAndConvert();
 
     if (createFileData == null) {
@@ -43,6 +43,8 @@ class FilesCubit extends Cubit<FilesState> {
 
     createFileData.courseId = course.id;
     createFileData.userId = '1';
+    String format = createFileData.filename.split('.').last;
+    createFileData.filename = '$title.$format';
 
     File? createdFile = (await stub.createFile(
       CreateFileRequest(

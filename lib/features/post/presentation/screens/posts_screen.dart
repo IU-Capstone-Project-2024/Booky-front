@@ -228,7 +228,7 @@ class _CreateNoteBottomsheetState extends State<CreateNoteBottomsheet> {
                   controller: _titleController,
                   enabled: widget.mode != ViewMode.read,
                   style: AppStyles.greyTitle.copyWith(color: AppColors.black),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Post title',
                     border: InputBorder.none,
                     hintStyle: AppStyles.greyTitle,
@@ -254,7 +254,7 @@ class _CreateNoteBottomsheetState extends State<CreateNoteBottomsheet> {
                     style: AppStyles.greyDescription
                         .copyWith(color: AppColors.black),
                     maxLines: null,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Post text',
                       border: InputBorder.none,
                       hintStyle: AppStyles.greyDescription,

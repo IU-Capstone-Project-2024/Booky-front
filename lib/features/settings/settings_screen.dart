@@ -58,7 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Education program',
                     style: AppStyles.settingsTitle,
                   ),
@@ -67,7 +67,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       underline: const SizedBox(),
                       borderRadius: BorderRadius.circular(15),
                       dropdownColor: AppColors.mainBackgroundColor,
-                      iconSize: 40,
+                      iconSize: 36,
                       style: AppStyles.settingsTitle.copyWith(fontSize: 18),
                       value: program,
                       items: const [
@@ -108,7 +108,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Education year',
                     style: AppStyles.settingsTitle,
                   ),
@@ -117,7 +117,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       underline: const SizedBox(),
                       borderRadius: BorderRadius.circular(15),
                       dropdownColor: AppColors.mainBackgroundColor,
-                      iconSize: 40,
+                      iconSize: 36,
                       style: AppStyles.settingsTitle.copyWith(fontSize: 18),
                       value: year,
                       items: yearValues(program),
@@ -140,7 +140,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Education track',
                     style: AppStyles.settingsTitle,
                   ),
@@ -149,7 +149,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       underline: const SizedBox(),
                       borderRadius: BorderRadius.circular(15),
                       dropdownColor: AppColors.mainBackgroundColor,
-                      iconSize: 40,
+                      iconSize: 36,
                       style: AppStyles.settingsTitle.copyWith(fontSize: 18),
                       value: track,
                       items: trackValues(),

@@ -39,18 +39,25 @@ class _PostsListState extends State<PostsList> {
           },
           loaded: (notes) {
             if (notes.isEmpty) {
-              return const Padding(
-                padding: EdgeInsets.only(top: 24.0),
+              return Padding(
+                padding: const EdgeInsets.only(top: 24.0),
                 child: Center(
                   child: Text(
                     'No posts yet...',
-                    style: AppStyles.title2Medium,
+                    style: AppStyles.content.copyWith(
+                      color: AppColors.titleColor,
+                      fontSize: 24,
+                    ),
                   ),
                 ),
               );
             }
             return Padding(
-              padding: const EdgeInsets.only(top: 16.0, left: 2.0, right: 2.0,),
+              padding: const EdgeInsets.only(
+                top: 16.0,
+                left: 2.0,
+                right: 2.0,
+              ),
               child: ListView(
                 shrinkWrap: true,
                 children: notes

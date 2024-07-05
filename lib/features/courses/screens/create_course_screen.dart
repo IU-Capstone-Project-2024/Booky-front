@@ -84,7 +84,10 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
               Navigator.of(context).pop();
             }
           },
-          icon: const Icon(Icons.done),
+          icon: const Icon(
+            Icons.done,
+            color: AppColors.white,
+          ),
         ),
         appBar: CommonAppBar(
           leading: IconButton(

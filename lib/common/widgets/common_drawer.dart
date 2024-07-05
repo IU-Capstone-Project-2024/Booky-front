@@ -23,7 +23,7 @@ Widget buildDrawer(BuildContext context) {
               size: 35,
               color: AppColors.titleColor,
             ),
-            title: const Text(
+            title: Text(
               'Home',
               style: AppStyles.toolbarStyle,
             ),
@@ -47,7 +47,7 @@ Widget buildDrawer(BuildContext context) {
               size: 35,
               color: AppColors.titleColor,
             ),
-            title: const Text(
+            title: Text(
               'Settings',
               style: AppStyles.toolbarStyle,
             ),

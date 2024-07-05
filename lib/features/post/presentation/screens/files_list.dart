@@ -1,3 +1,4 @@
+import 'package:booky/common/app_colors.dart/app_colors.dart';
 import 'package:booky/common/app_styles.dart';
 import 'package:booky/features/post/data/cubit/files_cubit.dart';
 import 'package:booky/features/post/presentation/widgets/file_list_item.dart';
@@ -37,10 +38,13 @@ class FilesList extends StatelessWidget {
                 loading: () => const Center(child: CircularProgressIndicator()),
                 loaded: (List<File> files) {
                   if (files.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text(
                         'No files yet...',
-                        style: AppStyles.title2Medium,
+                        style: AppStyles.content.copyWith(
+                          color: AppColors.titleColor,
+                          fontSize: 24,
+                        ),
                       ),
                     );
                   }

@@ -55,7 +55,10 @@ class _CoursesScreenState extends State<CoursesScreen> {
           backgroundColor: AppColors.mainBackgroundColor,
           drawer: buildDrawer(context),
           floatingActionButton: CommonFloatingActionButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(
+              Icons.add,
+              color: AppColors.white,
+            ),
             onPressed: () {
               Navigator.of(context)
                   .pushRoute(context, const CreateCourseScreen());
@@ -112,7 +115,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 _searchingField(),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 16.0, left: 16, right: 16),
+                  padding:
+                      const EdgeInsets.only(top: 16.0, left: 16, right: 16),
                   child: BlocBuilder<CoursesListCubit, CoursesListState>(
                     builder: (context, state) {
                       return state.when(

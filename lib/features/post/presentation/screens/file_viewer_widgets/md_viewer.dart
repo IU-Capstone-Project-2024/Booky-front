@@ -14,6 +14,9 @@ class MdViewer extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: MarkdownBody(
         data: BookyFilesConverter.bytesToString(file.content),
+        styleSheet: MarkdownStyleSheet(
+          textScaler: const TextScaler.linear(1.3),
+        ),
       ),
     );
   }

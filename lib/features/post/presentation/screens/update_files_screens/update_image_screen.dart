@@ -23,10 +23,13 @@ class _UpdateImageScreenState extends State<UpdateImageScreen> {
   String? fileId;
   List<int>? fileBytes;
   List<int>? imageBytes;
+  late final TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
+
+    _controller = TextEditingController();
 
     createdFile = null;
   }
@@ -73,13 +76,16 @@ class _UpdateImageScreenState extends State<UpdateImageScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              TextField(
+                controller: _controller,
+              ),
               const SizedBox(height: 16),
               MaterialButton(
                 onPressed: () async {
-                  createdFile = await getIt.get<FilesCubit>().uploadImage();
+                  createdFile = await getIt.get<FilesCubit>().uploadImage(_controller.text);
                     setState(() {});
                 },
-                child: const Text('Upload image'),
+                child: const Text('Choose image'),
               ),
               const SizedBox(height: 16),
               if (createdFile != null && createdFile!.content.isNotEmpty)
