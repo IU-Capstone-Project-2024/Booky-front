@@ -2,7 +2,7 @@ import 'package:booky/proto/generated/booky.pbgrpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:injectable/injectable.dart';
 
-// const String userId;
+const String userId = '1';
 
 @LazySingleton()
 class BookyTerminalClient {
@@ -11,8 +11,8 @@ class BookyTerminalClient {
   BookyTerminalClient() {
     _channel = ClientChannel(
       // 'localhost',
-      // '95.174.94.190',
-      '10.0.2.2',
+      '95.174.94.190',
+      // '10.0.2.2',
       port: 4000,
       options: const ChannelOptions(
         credentials: ChannelCredentials.insecure(),

@@ -25,26 +25,27 @@ class CoursesListCubit extends Cubit<CoursesListState> {
   Future<void> fetchCourses([String searchingTitle = '']) async {
     emit(const CoursesListState.loading());
 
-    courses.clear();
-    courses.addAll((await stub.listCourses(ListCoursesRequest())).courses);
+    stub.listCourses(ListCoursesRequest()).then((ListCoursesResponse response) {
+      courses.clear();
+      courses.addAll(response.courses);
 
-    final List<Course> coursesToShow = courses.where((Course course) {
-      if (course.semester != semester) {
-        return false;
-      }
-      if (year != course.year) {
-        return false;
-      }
-      if (searchingTitle.isEmpty) {
+      final List<Course> coursesToShow = courses.where((Course course) {
+        if (course.semester != semester) {
+          return false;
+        }
+        if (year != course.year) {
+          return false;
+        }
+        if (searchingTitle.isEmpty) {
+          return true;
+        }
+        if (course.title.toLowerCase().contains(searchingTitle.toLowerCase())) {
+          return true;
+        }
         return true;
-      }
-      if (course.title.toLowerCase().contains(searchingTitle.toLowerCase())) {
-        return true;
-      }
-      return true;
-    }).toList();
-
-    emit(CoursesListState.loaded(coursesToShow));
+      }).toList();
+      emit(CoursesListState.loaded(coursesToShow));
+    });
   }
 
   void setSemester(Semester semester) {
@@ -58,7 +59,6 @@ class CoursesListCubit extends Cubit<CoursesListState> {
   }
 
   Future<void> createCourse(Course courseData) async {
-
     stub
         .createCourse(CreateCourseRequest(
             data: CreateCourseData(

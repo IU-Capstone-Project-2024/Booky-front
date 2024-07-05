@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
+import 'package:booky/common/utils.dart';
 import 'package:booky/getit.dart';
 import 'package:booky/proto/client/booky_client.dart';
 import 'package:booky/proto/generated/booky.pbgrpc.dart';
@@ -42,6 +43,29 @@ class FilesCubit extends Cubit<FilesState> {
 
     createFileData.courseId = course.id;
     createFileData.userId = '1';
+
+    File? createdFile = (await stub.createFile(
+      CreateFileRequest(
+        data: createFileData,
+      ),
+    )).file;
+    
+    fetchFiles();
+
+    return createdFile;
+  }
+
+  Future<File?> uploadMd({required String md, required String title}) async {
+    List<int> mdBytes = BookyFilesConverter.stringToBytes(md);
+
+    CreateFileData createFileData = CreateFileData(
+      courseId: course.id,
+      content: mdBytes,
+      filename: '$title.md',
+      userId: '1',
+    );
+
+    emit(const FilesState.loading());
 
     File? createdFile = (await stub.createFile(
       CreateFileRequest(

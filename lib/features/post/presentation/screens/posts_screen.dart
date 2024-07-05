@@ -6,7 +6,7 @@ import 'package:booky/common/widgets/common_floating_action_button.dart';
 import 'package:booky/features/courses/data/bloc/notes_cubit/notes_cubit.dart';
 import 'package:booky/features/courses/screens/create_course_screen.dart';
 import 'package:booky/features/post/presentation/screens/files_list.dart';
-import 'package:booky/features/post/presentation/screens/posts_list_screen.dart';
+import 'package:booky/features/post/presentation/screens/posts_list.dart';
 import 'package:booky/features/post/presentation/widgets/create_file_bottomsheet.dart';
 import 'package:booky/getit.dart';
 import 'package:booky/proto/generated/booky.pb.dart';
@@ -90,21 +90,18 @@ class PostsScreen extends StatelessWidget {
                 },
               ),
               Expanded(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height - 148,
-                  child: PageView.builder(
-                    controller: controller,
-                    itemCount: 2,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return SingleChildScrollView(
-                            child: FilesList(course: course));
-                      } else {
-                        return SingleChildScrollView(
-                            child: PostsList(course: course));
-                      }
-                    },
-                  ),
+                child: PageView.builder(
+                  controller: controller,
+                  itemCount: 2,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return SingleChildScrollView(
+                          child: FilesList(course: course));
+                    } else {
+                      return SingleChildScrollView(
+                          child: PostsList(course: course));
+                    }
+                  },
                 ),
               ),
             ],
@@ -204,7 +201,7 @@ class _CreateNoteBottomsheetState extends State<CreateNoteBottomsheet> {
                         _bodyController.text,
                       );
                     }
-                    Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
                   },
                 ),
               ),
@@ -212,6 +209,7 @@ class _CreateNoteBottomsheetState extends State<CreateNoteBottomsheet> {
               children: [
                 TextFormField(
                   controller: _titleController,
+                  enabled: widget.mode != ViewMode.read,
                   style: AppStyles.greyTitle.copyWith(color: AppColors.black),
                   decoration: const InputDecoration(
                     hintText: 'Post title',
@@ -235,6 +233,7 @@ class _CreateNoteBottomsheetState extends State<CreateNoteBottomsheet> {
                   child: TextField(
                     controller: _bodyController,
                     keyboardType: TextInputType.multiline,
+                    enabled: widget.mode != ViewMode.read,
                     style: AppStyles.greyDescription
                         .copyWith(color: AppColors.black),
                     maxLines: null,

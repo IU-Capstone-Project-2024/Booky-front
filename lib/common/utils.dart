@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:booky/common/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:booky/features/post/domain/entities/file_entity.dart';
@@ -63,7 +65,6 @@ extension NavigatorX on NavigatorState {
   }
 }
 
-
 FileType getFileType(File file) {
   if (file.filename.endsWith('.pdf')) {
     return FileType.pdf;
@@ -75,5 +76,15 @@ FileType getFileType(File file) {
     return FileType.video;
   } else {
     return FileType.notStated;
+  }
+}
+
+abstract class BookyFilesConverter {
+  static List<int> stringToBytes(String str) {
+    return utf8.encode(str);
+  }
+
+  static String bytesToString(List<int> bytes) {
+    return utf8.decode(bytes);
   }
 }

@@ -80,7 +80,7 @@ class FileViewerRoot extends StatelessWidget {
           child: Text('Video Viewer'),
         );
       case FileType.md:
-        return const MdViewer();
+        return MdViewer(file: file);
       default:
         return const Center(
           child: Text('Error'),
