@@ -8,6 +8,7 @@ import 'package:booky/features/courses/screens/create_course_screen.dart';
 import 'package:booky/features/post/presentation/screens/files_list.dart';
 import 'package:booky/features/post/presentation/screens/posts_list.dart';
 import 'package:booky/features/post/presentation/widgets/create_file_bottomsheet.dart';
+import 'package:booky/features/post/presentation/widgets/create_note_bottomsheet.dart';
 import 'package:booky/getit.dart';
 import 'package:booky/proto/generated/booky.pb.dart';
 import 'package:booky/proto/generated/booky.pbgrpc.dart';
@@ -140,135 +141,6 @@ class PostsScreen extends StatelessWidget {
   }
 }
 
-class CreateNoteBottomsheet extends StatefulWidget {
-  const CreateNoteBottomsheet(
-    this.saveNote, {
-    super.key,
-    this.note,
-    required this.mode,
-    this.course,
-  });
-
-  final Note? note;
-  final void Function(String title, String body) saveNote;
-  final Course? course;
-
-  final ViewMode mode;
-
-  @override
-  State<CreateNoteBottomsheet> createState() => _CreateNoteBottomsheetState();
-}
-
-class _CreateNoteBottomsheetState extends State<CreateNoteBottomsheet> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _bodyController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.note != null) {
-      _titleController.text = widget.note!.title;
-      _bodyController.text = widget.note!.body;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
-        child: Stack(
-          children: [
-            if (widget.mode != ViewMode.read)
-              Positioned(
-                right: 0,
-                bottom: 16,
-                child: CommonFloatingActionButton(
-                  icon: const Icon(Icons.done, color: AppColors.white),
-                  onPressed: () {
-                    if (_titleController.text.isEmpty ||
-                        _bodyController.text.isEmpty) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Error'),
-                            content: const Text('All fields are required'),
-                            actions: [
-                              TextButton(
-                                onPressed: Navigator.of(context).pop,
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      return;
-                    }
-                    if (widget.mode == ViewMode.edit) {
-                      widget.note!.title = _titleController.text;
-                      widget.note!.body = _bodyController.text;
-                      getIt
-                          .get<NotesCubit>()
-                          .updateNote(widget.course!, widget.note!);
-                      Navigator.of(context).pop();
-                    } else {
-                      widget.saveNote(
-                        _titleController.text,
-                        _bodyController.text,
-                      );
-                    }
-                  },
-                ),
-              ),
-            Column(
-              children: [
-                TextFormField(
-                  controller: _titleController,
-                  enabled: widget.mode != ViewMode.read,
-                  style: AppStyles.greyTitle.copyWith(color: AppColors.black),
-                  decoration: InputDecoration(
-                    hintText: 'Post title',
-                    border: InputBorder.none,
-                    hintStyle: AppStyles.greyTitle,
-                  ),
-                ),
-                if (widget.note != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          widget.note!.publisher.name,
-                          style: AppStyles.description.copyWith(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
-                SingleChildScrollView(
-                  child: TextField(
-                    controller: _bodyController,
-                    keyboardType: TextInputType.multiline,
-                    enabled: widget.mode != ViewMode.read,
-                    style: AppStyles.greyDescription
-                        .copyWith(color: AppColors.black),
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: 'Post text',
-                      border: InputBorder.none,
-                      hintStyle: AppStyles.greyDescription,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class NavigationRow extends StatefulWidget {
   final void Function(int) onChanged;

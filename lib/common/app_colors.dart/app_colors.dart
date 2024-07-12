@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class AppColors {
-  static const Color titleColor = Color(0xff06C66D);
+  static const Color titleColor = Color(0xff0FB647);
 
   static const Color inactiveTitleColor = Color(0xff9FD8CB); 
 
@@ -18,4 +18,8 @@ abstract class AppColors {
   static const Color white = Colors.white;
 
   static const Color editableText = Color(0xff808080);
+
+  static const Color darkGreenColor = Color(0xff0FB245);
+
+  static const Color greenText = Color(0xff0FB647);
 }

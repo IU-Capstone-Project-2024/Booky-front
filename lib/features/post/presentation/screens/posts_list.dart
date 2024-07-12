@@ -3,6 +3,7 @@ import 'package:booky/common/app_styles.dart';
 import 'package:booky/common/widgets/confirm_diealog.dart';
 import 'package:booky/features/courses/data/bloc/notes_cubit/notes_cubit.dart';
 import 'package:booky/features/post/presentation/screens/posts_screen.dart';
+import 'package:booky/features/post/presentation/widgets/create_note_bottomsheet.dart';
 import 'package:booky/features/post/presentation/widgets/note_list_item.dart';
 import 'package:booky/getit.dart';
 import 'package:booky/proto/generated/booky.pb.dart';
@@ -196,11 +197,9 @@ class _PostsListState extends State<PostsList> {
     Course? course,
   ]) {
     showModalBottomSheet(
-      scrollControlDisabledMaxHeightRatio: 0.9,
       context: context,
       showDragHandle: true,
-      useSafeArea: true,
-      enableDrag: true,
+      isScrollControlled: true,
       isDismissible: false,
       backgroundColor: AppColors.mainBackgroundColor,
       shape: const RoundedRectangleBorder(

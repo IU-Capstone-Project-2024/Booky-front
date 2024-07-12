@@ -66,5 +66,12 @@ class NotesCubit extends Cubit<NotesState> {
     emit(NotesState.loaded(_notes));
   }
 
+  Future<String> getAIUpdatedText(String text) async {
+    return (await stub.getImprovedNote(
+      GetImprovedNoteRequest(body: text),
+    ))
+        .improvedBody;
+  }
+
   final List<Note> _notes = [];
 }

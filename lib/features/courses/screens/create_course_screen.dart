@@ -1,4 +1,6 @@
 import 'package:booky/common/app_colors.dart/app_colors.dart';
+import 'package:booky/common/app_colors.dart/app_gradients.dart';
+import 'package:booky/common/app_styles.dart';
 import 'package:booky/common/utils.dart';
 import 'package:booky/common/widgets/common_app_bar.dart';
 import 'package:booky/common/widgets/confirm_diealog.dart';
@@ -28,6 +30,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _yearController = TextEditingController();
+  // final _educationYearController = TextEditingController();
 
   @override
   void initState() {
@@ -44,6 +47,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
     _titleController.text = course.title;
     _descriptionController.text = course.description;
     _yearController.text = course.year.toString();
+    // _educationYearController.text = course..toString();
   }
 
   @override
@@ -137,52 +141,10 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              TextField(
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20.0,
-                    ),
-                controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Course title',
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  course.title = value;
-                },
-              ),
+              courseTitle(context),
+              courseYear(),
+              courseDescription(),
               const SizedBox(height: 16),
-              TextField(
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20.0,
-                    ),
-                controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Course description',
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  course.description = value;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20.0,
-                    ),
-                decoration: const InputDecoration(
-                  labelText: 'Year',
-                  border: OutlineInputBorder(),
-                ),
-                controller: _yearController,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  course.year = int.parse(value);
-                },
-              ),
               const SizedBox(height: 16),
               buildTracks(),
             ],
@@ -191,6 +153,141 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
       ),
     );
   }
+
+  Widget courseTitle(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxTextFieldWidth = constraints.maxWidth * 0.5;
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Course name*',
+              style: AppStyles.settingsTitle,
+            ),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: maxTextFieldWidth,
+              ),
+              child: TextField(
+                style: AppStyles.settingsTitle,
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  hintText: 'Course name',
+                  border: UnderlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  course.title = value;
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget courseDescription() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxTextFieldWidth = constraints.maxWidth * 0.5;
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Description*',
+              style: AppStyles.settingsTitle,
+            ),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: maxTextFieldWidth,
+              ),
+              child: Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: TextField(
+                    controller: _descriptionController,
+                    keyboardType: TextInputType.multiline,
+                    style: AppStyles.settingsTitle,
+                    maxLines: null,
+                    decoration: const InputDecoration(
+                      hintText: 'Description',                      
+                      border: UnderlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      course.description = value;
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget courseYear() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxTextFieldWidth = constraints.maxWidth * 0.5;
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Year*',
+              style: AppStyles.settingsTitle,
+            ),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: maxTextFieldWidth,
+              ),
+              child: TextField(
+                style: AppStyles.settingsTitle,
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(),
+                ),
+                controller: _yearController,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  course.year = int.parse(value);
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Widget educationYear() {
+  //   return Row(
+  //     children: [
+  //       Text('Education year*'),
+  //       Expanded(
+  //         child: TextField(
+  //           style: Theme.of(context).textTheme.titleLarge?.copyWith(
+  //                 fontWeight: FontWeight.normal,
+  //                 fontSize: 20.0,
+  //               ),
+  //           decoration: const InputDecoration(
+  //             border: UnderlineInputBorder(),
+  //           ),
+  //           controller: _yearController,
+  //           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+  //           keyboardType: TextInputType.number,
+  //           onChanged: (value) {
+  //             course.year = int.parse(value);
+  //           },
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget buildTracks() {
     List<Widget> widgets = [];
@@ -209,8 +306,20 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
         },
       ));
     }
-    return Row(
-      children: widgets,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: widgets.sublist(0, 4),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: widgets.sublist(4, 7),
+        ),
+      ],
     );
   }
 }
@@ -238,13 +347,28 @@ class __TrackChooseWidgetState extends State<_TrackChooseWidget> {
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+          width: 82,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
+            border: widget.track.choosen
+                ? Border.all(color: AppColors.greenText)
+                : Border.all(color: Colors.transparent),
             color: widget.track.choosen
-                ? AppColors.titleColor
-                : AppColors.inactiveTitleColor,
+                ? AppColors.white
+                : AppColors.greenText,
           ),
-          child: Text(trackToString(widget.track.track)),
+          child: Center(
+            child: Text(
+              trackToString(
+                widget.track.track,
+              ),
+              style: AppStyles.content.copyWith(
+                color: widget.track.choosen
+                    ? AppColors.greenText
+                    : AppColors.white,
+              ),
+            ),
+          ),
         ),
       ),
     );
